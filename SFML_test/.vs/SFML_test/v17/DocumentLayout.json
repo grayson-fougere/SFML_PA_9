@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\gfoug\\source\\repos\\SFML_PA_9\\SFML_test\\",
+  "WorkspaceRootPath": "C:\\Users\\kddh2\\source\\repos\\SFML_PA_9\\SFML_test\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B8B90E32-374E-40EC-BDBB-4168DAA81F68}|SFML_test.vcxproj|C:\\Users\\gfoug\\source\\repos\\SFML_PA_9\\SFML_test\\mian.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{B8B90E32-374E-40EC-BDBB-4168DAA81F68}|SFML_test.vcxproj|solutionrelative:mian.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{B8B90E32-374E-40EC-BDBB-4168DAA81F68}|SFML_test.vcxproj|C:\\Users\\kddh2\\source\\repos\\SFML_PA_9\\SFML_test\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{B8B90E32-374E-40EC-BDBB-4168DAA81F68}|SFML_test.vcxproj|solutionrelative:main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +19,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "mian.cpp",
-              "DocumentMoniker": "C:\\Users\\gfoug\\source\\repos\\SFML_PA_9\\SFML_test\\mian.cpp",
-              "RelativeDocumentMoniker": "mian.cpp",
-              "ToolTip": "C:\\Users\\gfoug\\source\\repos\\SFML_PA_9\\SFML_test\\mian.cpp",
-              "RelativeToolTip": "mian.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Title": "main.cpp",
+              "DocumentMoniker": "C:\\Users\\kddh2\\source\\repos\\SFML_PA_9\\SFML_test\\main.cpp",
+              "RelativeDocumentMoniker": "main.cpp",
+              "ToolTip": "C:\\Users\\kddh2\\source\\repos\\SFML_PA_9\\SFML_test\\main.cpp",
+              "RelativeToolTip": "main.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-04-14T23:58:46.646Z",
+              "WhenOpened": "2025-04-15T00:40:46.136Z",
               "EditorCaption": ""
             }
           ]

@@ -1,4 +1,4 @@
-﻿  mian.cpp
+﻿  main.cpp
 sfml-graphics-s-d.lib(Shape.obj) : warning LNK4099: PDB '' was not found with 'sfml-graphics-s-d.lib(Shape.obj)' or at ''; linking object as if no debug info
 sfml-graphics-s-d.lib(CircleShape.obj) : warning LNK4099: PDB '' was not found with 'sfml-graphics-s-d.lib(CircleShape.obj)' or at ''; linking object as if no debug info
 sfml-graphics-s-d.lib(RenderTarget.obj) : warning LNK4099: PDB '' was not found with 'sfml-graphics-s-d.lib(RenderTarget.obj)' or at ''; linking object as if no debug info
@@ -42,4 +42,4 @@ sfml-system-s-d.lib(Utils.obj) : warning LNK4099: PDB '' was not found with 'sfm
 sfml-system-s-d.lib(Clock.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Clock.obj)' or at ''; linking object as if no debug info
 sfml-system-s-d.lib(Sleep.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(Sleep.obj)' or at ''; linking object as if no debug info
 sfml-system-s-d.lib(SleepImpl.obj) : warning LNK4099: PDB '' was not found with 'sfml-system-s-d.lib(SleepImpl.obj)' or at ''; linking object as if no debug info
-  SFML_test.vcxproj -> C:\Users\gfoug\Source\Repos\SFML_PA_9\SFML_test\x64\Debug\SFML_test.exe
+  SFML_test.vcxproj -> C:\Users\kddh2\source\repos\SFML_PA_9\SFML_test\x64\Debug\SFML_test.exe
