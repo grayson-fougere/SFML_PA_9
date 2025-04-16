@@ -1,59 +1,66 @@
 #include <SFML/Graphics.hpp>
-#include "PlayerBall.hpp"
-#include "Obstacle.hpp"
-#include <vector>
+#include <SFML/Window.hpp>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode({ 1000, 1000}), "SFML_test Game");
-
-    std::vector<Obstacle*> obstacles;
-
-    // some obstacles
-    obstacles.push_back(new Obstacle({ 1000, 20 }, { 0, 0 })); // top border
-    obstacles.push_back(new Obstacle({ 20, 1000 }, { 0, 0 })); // left border
-    obstacles.push_back(new Obstacle({ 20, 1000 }, { 980, 0 })); // right border
-    obstacles.push_back(new Obstacle({ 1000, 20 }, { 0, 980 })); // bottom border
-
-    // player ball
-    PlayerBall player = PlayerBall(30, .01);
-    player.setPosition({ 500, 500 });
-
-    sf::Clock deltaClock;
+    //sf::Window App
+    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
+    sf::CircleShape shape(100.f);
+    sf::RectangleShape shape2({ 1600.f, 40.f });
+    shape2.setFillColor(sf::Color::Blue);
+    shape2.setPosition({ 0.f, 800.f });
+    shape.setFillColor(sf::Color::Red);
+    window.setFramerateLimit(60); // sets max frame rate to 60fps
+    int test = 1;
+    sf::Vector2f gravity({ 0.f, 3.f });
+    sf::Vector2f velocity({ 0.f, 0.f });
+    sf::Vector2f jump({ 0.f, -35.f });
+    sf::Vector2f movementSpeed({ 7.f, 0.f });
+    sf::Vector2f movementSpeedCap({ 30.f, 0.f });
 
     while (window.isOpen())
     {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
+            window.close();
+        }
+
+
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
-
-        int32_t dt = deltaClock.restart().asMilliseconds();
-
-        // update objects
-        player.update(dt);
-
-        // perform collision checks for player
-        std::vector<sf::FloatRect> obstBoxes;
-        for (auto obst : obstacles) {
-            obstBoxes.push_back(obst->getGlobalBounds());
+        
+        if (shape.getGlobalBounds().findIntersection(shape2.getGlobalBounds())) {
+            //shape.setPosition({get})
+            sf::Vector2f playerCurPos = shape.getPosition();
+            sf::Vector2f objCurPos = shape2.getPosition();
+            sf::Vector2f offset({ 0.f, -200.1f });
+            shape.setPosition({ playerCurPos.x, objCurPos.y + offset.y });
+            velocity.y = (0.f);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+                velocity += jump;
+            }
         }
-        player.collide(obstBoxes);
+        else if (!shape.getGlobalBounds().findIntersection(shape2.getGlobalBounds()) && velocity.y < (35.f)) {
+            velocity += gravity;
+        }
+        
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && velocity.x > -movementSpeedCap.x) {
+            velocity -= movementSpeed;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && velocity.x < movementSpeedCap.x) {
+            velocity += movementSpeed;
+        }
 
-        std::cout << player.getPosition().x << " " << player.getPosition().y << std::endl;
+        //still need to add drag
 
-        //for (auto obj : gameObjs) {
-            //obj->update();
-        //}
+        shape.move(velocity);
 
+        
         window.clear();
-
-        for (auto obst : obstacles) {
-            window.draw(*obst);
-        }
-
-        window.draw(player);
+        window.draw(shape);
+        window.draw(shape2);
         window.display();
     }
 }
