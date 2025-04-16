@@ -6,6 +6,8 @@ int main()
 {
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
+    PlayerBall player = PlayerBall(100, 0.75f, 50.f, 0.15f, {10.f, 10.f});
+    sf::RectangleShape shape2({ 1600.f, 100.f });
     PlayerBall player = PlayerBall(100, 1.f, 35.f, 0.1f, {10.f, 10.f});
     sf::RectangleShape shape2({ 1600.f, 40.f });
     //sf::ConvexShape shape2(4);
@@ -19,6 +21,9 @@ int main()
     // DebugCircle colcirc2(5.f,2.f);
     shape2.setFillColor(sf::Color::Blue);
     shape2.setPosition({ 0.f, 800.f });
+    sf::RectangleShape shape3({ 50.f, 500.f });
+    shape3.setFillColor(sf::Color::Green);
+    shape3.setPosition({ 1200.f, 0.f });
     window.setFramerateLimit(60); // sets max frame rate to 60fps
     int test = 1;
 
@@ -40,7 +45,13 @@ int main()
         int32_t dt = deltaTimeClock.restart().asMilliseconds();
         player.update(dt);
 
-        player.collideTop(shape2);
+        std::vector<sf::FloatRect> collisionBoxes;
+        collisionBoxes.push_back(shape2.getGlobalBounds());
+        collisionBoxes.push_back(shape3.getGlobalBounds());
+
+        player.collide(collisionBoxes);
+
+        //player.collideTop(shape2);
         player.collideView(window.getSize());
         
         //if (shape.getGlobalBounds().findIntersection(shape2.getGlobalBounds())) {
@@ -72,6 +83,7 @@ int main()
         window.clear();
         window.draw(player);
         window.draw(shape2);
+        window.draw(shape3);
         //window.draw(colsqr);
         // window.draw(colcirc1);
         // window.draw(colcirc2);
