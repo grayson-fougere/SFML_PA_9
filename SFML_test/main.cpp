@@ -6,10 +6,13 @@ int main()
 {
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
-    PlayerBall player = PlayerBall(100, 1.f, 35.f, 0.1f, {10.f, 10.f});
-    sf::RectangleShape shape2({ 1600.f, 40.f });
+    PlayerBall player = PlayerBall(100, 0.75f, 50.f, 0.15f, {10.f, 10.f});
+    sf::RectangleShape shape2({ 1600.f, 100.f });
     shape2.setFillColor(sf::Color::Blue);
     shape2.setPosition({ 0.f, 800.f });
+    sf::RectangleShape shape3({ 50.f, 500.f });
+    shape3.setFillColor(sf::Color::Green);
+    shape3.setPosition({ 1200.f, 0.f });
     window.setFramerateLimit(60); // sets max frame rate to 60fps
     int test = 1;
 
@@ -29,11 +32,11 @@ int main()
         }
 
         int32_t dt = deltaTimeClock.restart().asMilliseconds();
-        player.update(1);
-        std::cout << player.getPosition().x << " " << player.getPosition().y << std::endl;
+        player.update(dt);
 
         std::vector<sf::FloatRect> collisionBoxes;
         collisionBoxes.push_back(shape2.getGlobalBounds());
+        collisionBoxes.push_back(shape3.getGlobalBounds());
 
         player.collide(collisionBoxes);
 
@@ -70,6 +73,7 @@ int main()
         window.clear();
         window.draw(player);
         window.draw(shape2);
+        window.draw(shape3);
         window.display();
     }
 }
