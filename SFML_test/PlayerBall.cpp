@@ -23,7 +23,7 @@ void PlayerBall::update(int32_t dt) {
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) &&
 		!hasJumped) {
 
-		_momentum.y -= _jump;
+		_momentum.y -= _jump * dt;
 		hasJumped = true;
 	}
 
@@ -51,8 +51,6 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 		float collLen = collRect.size.x < collRect.size.y ? collRect.size.x : collRect.size.y;
 
 		// step 4 - mind vector to move back by
-		sf::Vector2f momNorm = _momentum.normalized();
-		
 		float minComp = 1;
 		if (abs(_momentum.x) < abs(_momentum.y) && _momentum.x != 0) minComp = _momentum.x;
 		else if (abs(_momentum.y) < abs(_momentum.x) && _momentum.y != 0) minComp = _momentum.y;
@@ -97,9 +95,6 @@ void PlayerBall::collideTop(sf::RectangleShape floor) {
 	    setPosition({ playerCurPos.x, objCurPos.y + offset.y });
 	    _momentum.y = (0.f);
 	}
-	//else if (!getGlobalBounds().findIntersection(floor.getGlobalBounds()) && _momentum.y < (35.f)) {
-	//    _momentum.y += _gravity;
-	//}
 }
 
 void PlayerBall::collideView(sf::Vector2u windowSize) {
