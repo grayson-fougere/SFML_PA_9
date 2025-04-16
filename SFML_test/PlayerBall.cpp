@@ -15,21 +15,59 @@ void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; 
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
 
 void PlayerBall::update(int32_t dt) {
-	// update momentum
+	// update momentum - step 0 [input]
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) _momentum.x -= _accel * dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) _momentum.x += _accel * dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W) ||
 		sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) _momentum.y -= _jump;
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) _momentum.y += _accel * dt;
 
 	// add gravity
 	_momentum.y += _gravity * dt;
 
-	// apply movement
+	// apply movement - step 1 of whiteboard
 	move(_momentum);
 }
 
 void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
+	// loop through all rects to check
+	for (auto rect : collisionsToCheck) {
+		// step 2 - find intersecting rectangle, if any
+		auto collRectOpt = getGlobalBounds().findIntersection(rect);
+
+		// continue on with list if no collision
+		if (!collRectOpt) continue;
+
+		// step 3 - find min length to move out of collision from
+		auto collRect = collRectOpt.value();
+		float collLen = collRect.size.x < collRect.size.y ? collRect.size.x : collRect.size.y;
+
+		// step 4 - mind vector to move back by
+		sf::Vector2f momNorm = _momentum.normalized();
+		float minComp = _momentum.x < _momentum.y ? _momentum.x : _momentum.y;
+		sf::Vector2f moveVec = momNorm * collLen * (1 / minComp);
+
+		// step 5 - move by amount
+		move(-moveVec);
+
+		// step 6 - find vector to subtract from momentum
+		sf::Vector2f sub;
+
+		if (collRect.size.x > collRect.size.y) {
+			sub = { 0, _momentum.y };
+		}
+		else if (collRect.size.y > collRect.size.x) {
+			sub = { _momentum.x, 0 };
+		}
+		else {
+			sub = { _momentum.x, _momentum.y };
+		}
+
+		_momentum -= sub;
+	}
+
+
+
+
 	//// loop through all transforms to check
 	//for (auto rect : collisionsToCheck) {
 	//	// check for collision

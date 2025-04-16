@@ -29,9 +29,15 @@ int main()
         }
 
         int32_t dt = deltaTimeClock.restart().asMilliseconds();
-        player.update(dt);
+        player.update(1);
+        std::cout << player.getPosition().x << " " << player.getPosition().y << std::endl;
 
-        player.collideTop(shape2);
+        std::vector<sf::FloatRect> collisionBoxes;
+        collisionBoxes.push_back(shape2.getGlobalBounds());
+
+        player.collide(collisionBoxes);
+
+        //player.collideTop(shape2);
         player.collideView(window.getSize());
         
         //if (shape.getGlobalBounds().findIntersection(shape2.getGlobalBounds())) {
