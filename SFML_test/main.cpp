@@ -8,6 +8,17 @@ int main()
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
     PlayerBall player = PlayerBall(100, 0.75f, 50.f, 0.15f, {10.f, 10.f});
     sf::RectangleShape shape2({ 1600.f, 100.f });
+    PlayerBall player = PlayerBall(100, 1.f, 35.f, 0.1f, {10.f, 10.f});
+    sf::RectangleShape shape2({ 1600.f, 40.f });
+    //sf::ConvexShape shape2(4);
+    //shape2.setPoint(0, { 0, 500 });
+    //shape2.setPoint(1, { 1000, 800 });
+    //shape2.setPoint(2, { 1000, 2000 });
+    //shape2.setPoint(3, { 0, 2000 });
+
+    sf::RectangleShape colsqr({ 0.f, 0.f });
+    // DebugCircle colcirc1(5.f, 2.f);
+    // DebugCircle colcirc2(5.f,2.f);
     shape2.setFillColor(sf::Color::Blue);
     shape2.setPosition({ 0.f, 800.f });
     sf::RectangleShape shape3({ 50.f, 500.f });
@@ -69,11 +80,15 @@ int main()
 
         //shape.move(velocity);
 
-        
         window.clear();
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
+        //window.draw(colsqr);
+        // window.draw(colcirc1);
+        // window.draw(colcirc2);
         window.display();
     }
 }
+
+
