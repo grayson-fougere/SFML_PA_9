@@ -43,8 +43,21 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 
 		// step 4 - mind vector to move back by
 		sf::Vector2f momNorm = _momentum.normalized();
-		float minComp = _momentum.x < _momentum.y ? _momentum.x : _momentum.y;
-		sf::Vector2f moveVec = momNorm * collLen * (1 / minComp);
+		
+		float minComp = 1;
+		if (abs(_momentum.x) < abs(_momentum.y) && _momentum.x != 0) minComp = _momentum.x;
+		else if (abs(_momentum.y) < abs(_momentum.x) && _momentum.y != 0) minComp = _momentum.y;
+		
+		sf::Vector2f moveVec;
+		if (_momentum.x != 0 || _momentum.y != 0) {
+			sf::Vector2f momNorm = _momentum;
+			float length = momNorm.length();
+			if (length > 0) {
+				momNorm /= length;
+			}
+
+			moveVec = momNorm * collLen;
+		}
 
 		// step 5 - move by amount
 		move(-moveVec);
@@ -64,41 +77,6 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 
 		_momentum -= sub;
 	}
-
-
-
-
-	//// loop through all transforms to check
-	//for (auto rect : collisionsToCheck) {
-	//	// check for collision
-		//if (getGlobalBounds().findIntersection(rect)) {
-	//		// get centers of player and rect to avoid many func calls
-	//		sf::Vector2f playerCenter = getGeometricCenter(),
-	//			rectCenter = rect.getCenter();
-
-	//		// if rect on left of player, move player to right edge of rect and stop horiz motion
-	//		if (rectCenter.x < playerCenter.x && momentum.x < 0) {
-	//			setPosition(sf::Vector2f(rect.position.x + rect.size.x, getPosition().y));
-	//			momentum.x = 0;
-	//		}
-	//		// if player on left of rect, move player to left edge of rect and stop horiz motion
-	//		if (playerCenter.x < rectCenter.x && momentum.x > 0) {
-	//			setPosition(sf::Vector2f(rect.position.x - (getRadius() * 2), getPosition().y));
-	//			momentum.x = 0;
-	//		}
-	//		// if rect above player, move player to bottom of rect and stop vert motion
-	//		if (rectCenter.y < playerCenter.y && momentum.y < 0) {
-	//			setPosition(sf::Vector2f(getPosition().x, rect.position.y + rect.size.y));
-	//			momentum.y = 0;
-	//		}
-	//		// if player above below, move player to top of rect and stop vert motion
-	//		if (playerCenter.y < rectCenter.y && momentum.y > 0) {
-	//			setPosition(sf::Vector2f(getPosition().x, rect.position.y - (getRadius() * 2)));
-	//			momentum.y = 0;
-	//		}
-	//		
-	//	}
-	//}
 }
 
 void PlayerBall::collideTop(sf::RectangleShape floor) {
