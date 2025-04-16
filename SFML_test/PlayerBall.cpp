@@ -3,9 +3,9 @@
 PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, { 0, 0 }) {}
 
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
-		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), sf::CircleShape(radius) {
+		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), sf::CircleShape(radius) {
 
-	_ballTexture = sf::Texture(sf::Image("Resources/Ball100.png")), sf::IntRect({ 0, 0 }, { 100, 100 });
+	_ballTexture = sf::Texture(sf::Image("Resources/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
 
 	setTexture(&_ballTexture);
 }
@@ -13,13 +13,19 @@ PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf:
 void PlayerBall::setAccel(float newAccel) { _accel = newAccel; }
 void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; }
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
+void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
 
 void PlayerBall::update(int32_t dt) {
 	// update momentum - step 0 [input]
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) _momentum.x -= _accel * dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) _momentum.x += _accel * dt;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) _momentum.y -= _jump;
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W) ||
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) &&
+		!hasJumped) {
+
+		_momentum.y -= _jump;
+		hasJumped = true;
+	}
 
 	// add gravity
 	_momentum.y += _gravity * dt;
@@ -36,6 +42,9 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 
 		// continue on with list if no collision
 		if (!collRectOpt) continue;
+
+		// BAD way to enable jump again
+		if (_momentum.y > 0) hasJumped = false;
 
 		// step 3 - find min length to move out of collision from
 		auto collRect = collRectOpt.value();
@@ -121,6 +130,7 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 	if (newY + (getRadius() * 2) > windowSize.y) {
 		newY = windowSize.y - (getRadius() * 2);
 		newYMom = 0;
+		hasJumped = false;
 	}
 
 	setPosition({ newX, newY });
