@@ -20,6 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="DebugCircle.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CollisionHelper.hpp" />
+    <ClInclude Include="Line.hpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
