@@ -20,6 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Obstacle.hpp" />
+    <ClCompile Include="PlayerBall.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PlayerBall.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
