@@ -23,6 +23,7 @@
     <ClCompile Include="DebugCircle.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionHelper.hpp" />
     <ClInclude Include="Line.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
