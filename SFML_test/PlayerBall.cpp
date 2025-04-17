@@ -1,11 +1,12 @@
 #include "PlayerBall.hpp"
+#include "CollisionHelper.hpp"
 
 PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, { 0, 0 }) {}
 
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
-		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), sf::CircleShape(radius) {
+		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), sf::CircleShape(radius) {
 
-	_ballTexture = sf::Texture(sf::Image("Resources/Ball100.png")), sf::IntRect({ 0, 0 }, { 100, 100 });
+	_ballTexture = sf::Texture(sf::Image("Resources/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
 
 	setTexture(&_ballTexture);
 }
@@ -13,54 +14,83 @@ PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf:
 void PlayerBall::setAccel(float newAccel) { _accel = newAccel; }
 void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; }
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
+void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
 
 void PlayerBall::update(int32_t dt) {
-	// update momentum
+	// update momentum - step 0 [input]
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) _momentum.x -= _accel * dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) _momentum.x += _accel * dt;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W) ||
-		sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) _momentum.y -= _jump;
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) _momentum.y += _accel * dt;
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W) ||
+		sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) &&
+		!hasJumped) {
+
+		_momentum.y -= _jump * dt;
+		hasJumped = true;
+	}
 
 	// add gravity
 	_momentum.y += _gravity * dt;
 
-	// apply movement
+	// apply movement - step 1 of whiteboard
 	move(_momentum);
 }
 
 void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
-	//// loop through all transforms to check
-	//for (auto rect : collisionsToCheck) {
-	//	// check for collision
-		//if (getGlobalBounds().findIntersection(rect)) {
-	//		// get centers of player and rect to avoid many func calls
-	//		sf::Vector2f playerCenter = getGeometricCenter(),
-	//			rectCenter = rect.getCenter();
+	// loop through all rects to check
+	for (auto rect : collisionsToCheck) {
+		// step 2 - find intersecting rectangle, if any
+		auto collRectOpt = getGlobalBounds().findIntersection(rect);
 
-	//		// if rect on left of player, move player to right edge of rect and stop horiz motion
-	//		if (rectCenter.x < playerCenter.x && momentum.x < 0) {
-	//			setPosition(sf::Vector2f(rect.position.x + rect.size.x, getPosition().y));
-	//			momentum.x = 0;
-	//		}
-	//		// if player on left of rect, move player to left edge of rect and stop horiz motion
-	//		if (playerCenter.x < rectCenter.x && momentum.x > 0) {
-	//			setPosition(sf::Vector2f(rect.position.x - (getRadius() * 2), getPosition().y));
-	//			momentum.x = 0;
-	//		}
-	//		// if rect above player, move player to bottom of rect and stop vert motion
-	//		if (rectCenter.y < playerCenter.y && momentum.y < 0) {
-	//			setPosition(sf::Vector2f(getPosition().x, rect.position.y + rect.size.y));
-	//			momentum.y = 0;
-	//		}
-	//		// if player above below, move player to top of rect and stop vert motion
-	//		if (playerCenter.y < rectCenter.y && momentum.y > 0) {
-	//			setPosition(sf::Vector2f(getPosition().x, rect.position.y - (getRadius() * 2)));
-	//			momentum.y = 0;
-	//		}
-	//		
-	//	}
-	//}
+		// continue on with list if no collision
+		if (!collRectOpt) continue;
+
+		// BAD way to enable jump again
+		if (_momentum.y > 0) hasJumped = false;
+
+		// step 3 - find min length to move out of collision from
+		auto collRect = collRectOpt.value();
+		float collLen = collRect.size.x < collRect.size.y ? collRect.size.x : collRect.size.y;
+
+		// step 4 - mind vector to move back by
+		float minComp = 1;
+		if (abs(_momentum.x) < abs(_momentum.y) && _momentum.x != 0) minComp = _momentum.x;
+		else if (abs(_momentum.y) < abs(_momentum.x) && _momentum.y != 0) minComp = _momentum.y;
+		
+		sf::Vector2f moveVec;
+		if (_momentum.x != 0 || _momentum.y != 0) {
+			sf::Vector2f momNorm = _momentum;
+			float length = momNorm.length();
+			if (length > 0) {
+				momNorm /= length;
+			}
+
+			moveVec = momNorm * collLen;
+		}
+
+		// step 5 - move by amount
+		move(-moveVec);
+
+		// step 6 - find vector to subtract from momentum
+		sf::Vector2f sub;
+
+		if (collRect.size.x > collRect.size.y) {
+			sub = { 0, _momentum.y };
+		}
+		else if (collRect.size.y > collRect.size.x) {
+			sub = { _momentum.x, 0 };
+		}
+		else {
+			sub = { _momentum.x, _momentum.y };
+		}
+
+		_momentum -= sub;
+	}
+}
+
+void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
+	for (auto obst : obstacles) {
+		if (CollisionHelper::findAllIntersections(*this, obst).size() > 0) std::cout << "bsdjk" << std::endl;
+	}
 }
 
 void PlayerBall::collideTop(sf::RectangleShape floor) {
@@ -72,9 +102,6 @@ void PlayerBall::collideTop(sf::RectangleShape floor) {
 	    setPosition({ playerCurPos.x, objCurPos.y + offset.y });
 	    _momentum.y = (0.f);
 	}
-	//else if (!getGlobalBounds().findIntersection(floor.getGlobalBounds()) && _momentum.y < (35.f)) {
-	//    _momentum.y += _gravity;
-	//}
 }
 
 void PlayerBall::collideView(sf::Vector2u windowSize) {
@@ -105,6 +132,7 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 	if (newY + (getRadius() * 2) > windowSize.y) {
 		newY = windowSize.y - (getRadius() * 2);
 		newYMom = 0;
+		hasJumped = false;
 	}
 
 	setPosition({ newX, newY });
