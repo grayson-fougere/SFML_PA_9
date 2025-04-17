@@ -1,11 +1,15 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "PlayerBall.hpp"
-
+#include "Background.hpp"
 int main()
 {
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
+    Background WorldBackground;
+    WorldBackground.resize(window.getSize());
+
+    
     PlayerBall player = PlayerBall(100, 0.75f, 50.f, 0.15f, {10.f, 10.f});
     sf::RectangleShape shape2({ 1600.f, 100.f });
 
@@ -72,6 +76,7 @@ int main()
         //shape.move(velocity);
 
         window.clear();
+        WorldBackground.draw(window);
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
