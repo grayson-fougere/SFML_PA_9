@@ -6,11 +6,11 @@ int main()
 {
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
+
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
+    PlayerBall player = PlayerBall(100, 0.75f, 5.f, 0.15f, {10.f, 10.f});
 
-    
-    PlayerBall player = PlayerBall(100, 0.75f, 50.f, 0.15f, {10.f, 10.f});
     sf::RectangleShape shape2({ 1600.f, 100.f });
 
     sf::RectangleShape colsqr({ 0.f, 0.f });
@@ -20,7 +20,6 @@ int main()
     shape3.setFillColor(sf::Color::Green);
     shape3.setPosition({ 1200.f, 0.f });
     window.setFramerateLimit(60); // sets max frame rate to 60fps
-    int test = 1;
 
     sf::Clock deltaTimeClock;
 
@@ -29,7 +28,6 @@ int main()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
         }
-
 
         while (const std::optional event = window.pollEvent())
         {
@@ -48,28 +46,6 @@ int main()
 
         //player.collideTop(shape2);
         player.collideView(window.getSize());
-        
-        //if (shape.getGlobalBounds().findIntersection(shape2.getGlobalBounds())) {
-        //    //shape.setPosition({get})
-        //    sf::Vector2f playerCurPos = shape.getPosition();
-        //    sf::Vector2f objCurPos = shape2.getPosition();
-        //    sf::Vector2f offset({ 0.f, -200.1f });
-        //    shape.setPosition({ playerCurPos.x, objCurPos.y + offset.y });
-        //    velocity.y = (0.f);
-        //    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-        //        velocity += jump;
-        //    }
-        //}
-        //else if (!shape.getGlobalBounds().findIntersection(shape2.getGlobalBounds()) && velocity.y < (35.f)) {
-        //    velocity += gravity;
-        //}
-        //
-        //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && velocity.x > -movementSpeedCap.x) {
-        //    velocity -= movementSpeed;
-        //}
-        //if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && velocity.x < movementSpeedCap.x) {
-        //    velocity += movementSpeed;
-        //}
 
         //still need to add drag
 
