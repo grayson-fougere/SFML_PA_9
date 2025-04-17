@@ -1,4 +1,5 @@
 #include "PlayerBall.hpp"
+#include "CollisionHelper.hpp"
 
 PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, { 0, 0 }) {}
 
@@ -83,6 +84,12 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 		}
 
 		_momentum -= sub;
+	}
+}
+
+void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
+	for (auto obst : obstacles) {
+		if (CollisionHelper::findAllIntersections(*this, obst).size() > 0) std::cout << "bsdjk" << std::endl;
 	}
 }
 

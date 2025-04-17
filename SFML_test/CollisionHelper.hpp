@@ -53,7 +53,7 @@ public:
                 std::optional v = findIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
                 if (v) {
                     intersects.push_back(v.value());
-                    std::cout << v.value() << std::endl;
+                    //std::cout << v.value() << std::endl;
                 }
             }
             //std::cout << i << std::endl;

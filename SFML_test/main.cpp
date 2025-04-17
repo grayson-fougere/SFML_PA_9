@@ -15,6 +15,15 @@ int main()
     sf::RectangleShape shape3({ 50.f, 500.f });
     shape3.setFillColor(sf::Color::Green);
     shape3.setPosition({ 1200.f, 0.f });
+
+    sf::ConvexShape trianslkgb(3);
+    trianslkgb.setPoint(0, { 0, 50 });
+    trianslkgb.setPoint(1, { 50, 50 });
+    trianslkgb.setPoint(2, { 25, 0 });
+    trianslkgb.setFillColor(sf::Color::Green);
+    trianslkgb.setScale({ 3.f, 3.f });
+    trianslkgb.setPosition({ 800, 750 });
+
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;
@@ -40,6 +49,11 @@ int main()
 
         player.collide(collisionBoxes);
 
+        std::vector<sf::ConvexShape> obstacles;
+        obstacles.push_back(trianslkgb);
+
+        player.collideObstacles(obstacles);
+
         //player.collideTop(shape2);
         player.collideView(window.getSize());
 
@@ -51,6 +65,7 @@ int main()
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
+        window.draw(trianslkgb);
         //window.draw(colsqr);
         // window.draw(colcirc1);
         // window.draw(colcirc2);
