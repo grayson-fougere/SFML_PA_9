@@ -89,7 +89,14 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 
 void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
 	for (auto obst : obstacles) {
-		if (CollisionHelper::findAllIntersections(*this, obst).size() > 0) std::cout << "bsdjk" << std::endl;
+		std::vector<sf::Vector2f> intersectingPoints = CollisionHelper::findAllIntersections(*this, obst);
+		if (intersectingPoints.size() > 0) {
+			setScale({ 0.75f, 0.75f });
+			std::cout << "Intersecting points:" << std::endl;
+			for (auto pt : intersectingPoints) {
+				std::cout << pt << std::endl;
+			}
+		}
 	}
 }
 
