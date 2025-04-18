@@ -1,8 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "Collidable.hpp"
 
-class PlayerBall : public sf::CircleShape {
+class PlayerBall : public sf::CircleShape, public Collidable {
 
 public:
 	PlayerBall(float radius);
@@ -19,6 +20,8 @@ public:
 	void collideObstacles(std::vector<sf::ConvexShape> obstacles);
 	void collideTop(sf::RectangleShape floor);
 	void collideView(sf::Vector2u windowSize);
+
+	void onCollide(Collidable& obj);
 
 private:
 	sf::Vector2f _momentum;
