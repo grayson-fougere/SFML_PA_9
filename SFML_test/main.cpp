@@ -9,11 +9,17 @@ int main()
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
-    PlayerBall player = PlayerBall(100, 0.75f, 5.f, 0.15f, {10.f, 10.f});
+    PlayerBall player = PlayerBall(100, 0.25f, 5.f, 0.15f, {10.f, 10.f});
 
     sf::RectangleShape shape2({ 1600.f, 100.f });
 
-    sf::RectangleShape colsqr({ 0.f, 0.f });
+    //sf::RectangleShape colsqr({ 100.f, 100.f });
+    sf::ConvexShape trasnejdks(3);
+    trasnejdks.setPoint(0, { 0.f, 0.f });
+    trasnejdks.setPoint(1, { 100.f, 0.f });
+    trasnejdks.setPoint(2, { 0.f, -100.f });
+    trasnejdks.setFillColor(sf::Color::Red);
+    trasnejdks.setPosition({ 0, 1800});
     shape2.setFillColor(sf::Color::Blue);
     shape2.setPosition({ 0.f, 800.f });
     sf::RectangleShape shape3({ 50.f, 500.f });
@@ -55,6 +61,7 @@ int main()
 
         std::vector<sf::ConvexShape> obstacles;
         //obstacles.push_back(trianslkgb);
+        obstacles.push_back(trasnejdks);
 
         player.collideObstacles(obstacles);
 
@@ -71,7 +78,7 @@ int main()
         window.draw(shape2);
         window.draw(shape3);
         //window.draw(trianslkgb);
-        //window.draw(colsqr);
+        window.draw(trasnejdks);
         // window.draw(colcirc1);
         // window.draw(colcirc2);
         window.display();
