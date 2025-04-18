@@ -4,14 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-// WE SHOULD MAKE A COLLIDEABLE CLASS AT SOME POINT
-// WHICH WOULD BE INHERITED BY PLAYERS/WALLS/OBSTACLES
-// it is not appropriate for this class to have this.
-inline std::ostream& operator<<(std::ostream& lhs, const sf::Vector2f& rhs) {
-    lhs << "<" << rhs.x << ", " << rhs.y << ">" << std::endl;
-    return lhs;
-}
-
 class CollisionHelper {
 public:
     static bool isInRange(const float& n, const float& bound1, const float& bound2) {

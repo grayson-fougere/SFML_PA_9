@@ -1,10 +1,10 @@
 #include "PlayerBall.hpp"
 #include "CollisionHelper.hpp"
 
-PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, { 0, 0 }) {}
+PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, {0, 0}) {}
 
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
-		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), sf::CircleShape(radius) {
+		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), sf::CircleShape(radius), Collidable("Player") {
 
 	_ballTexture = sf::Texture(sf::Image("Resources/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
 
@@ -89,7 +89,12 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 
 void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
 	for (auto obst : obstacles) {
-		if (CollisionHelper::findAllIntersections(*this, obst).size() > 0) std::cout << "bsdjk" << std::endl;
+		std::vector<sf::Vector2f> intersects = findAllIntersections(*this, obst);
+		if (intersects.size() > 0) {
+			std::cout << "Collision :)" << std::endl;
+			applyCollisionForces(intersects, this);
+			_momentum = sf::Vector2f();
+		}
 	}
 }
 
@@ -137,4 +142,8 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 
 	setPosition({ newX, newY });
 	_momentum = { newXMom, newYMom };
+}
+
+void PlayerBall::onCollide(Collidable& obj)
+{
 }
