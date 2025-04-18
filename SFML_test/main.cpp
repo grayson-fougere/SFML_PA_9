@@ -7,6 +7,10 @@ int main()
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
 
+    sf::View view({ 0.f, 0.f }, sf::Vector2f(window.getSize().x, window.getSize().y));
+
+    window.setView(view);
+
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
     PlayerBall player = PlayerBall(100, 0.25f, 5.f, 0.15f, {10.f, 10.f});
@@ -19,7 +23,8 @@ int main()
     trasnejdks.setPoint(1, { 100.f, 0.f });
     trasnejdks.setPoint(2, { 0.f, -100.f });
     trasnejdks.setFillColor(sf::Color::Red);
-    trasnejdks.setPosition({ 0, 1800});
+    trasnejdks.setScale({ 2.5f, 2.5f });
+    trasnejdks.setPosition({ 0, 1800 });
     shape2.setFillColor(sf::Color::Blue);
     shape2.setPosition({ 0.f, 800.f });
     sf::RectangleShape shape3({ 50.f, 500.f });
@@ -71,6 +76,9 @@ int main()
         //still need to add drag
 
         //shape.move(velocity);
+
+        view.setCenter(player.getGlobalBounds().getCenter());
+        window.setView(view);
 
         window.clear();
         WorldBackground.draw(window);
