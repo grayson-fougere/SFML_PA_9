@@ -91,7 +91,7 @@ void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
 	for (auto obst : obstacles) {
 		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, obst);
 		if (intersectingPoints.size() > 0) {
-			setScale({ 0.75f, 0.75f });
+			//setScale({ 0.75f, 0.75f });
 			applyCollisionForces(intersectingPoints, this);
 			_momentum = sf::Vector2f();
 			std::cout << "Intersecting points:" << std::endl;
