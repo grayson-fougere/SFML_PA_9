@@ -8,12 +8,13 @@
     <ClCompile Include="PlayerBall.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Collidable.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionHelper.hpp" />
-    <ClInclude Include="Line.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
     <ClInclude Include="Background.hpp" />
     <ClInclude Include="Collidable.hpp" />
+    <ClInclude Include="Camera.hpp" />
   </ItemGroup>
 </Project>
