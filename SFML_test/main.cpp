@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include "PlayerBall.hpp"
 #include "Background.hpp"
+#include "mainMenu.hpp"
 #include "Camera.hpp"
 int main()
 {
