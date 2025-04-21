@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
@@ -6,6 +8,7 @@
 class PlayerBall : public sf::CircleShape, public Collidable {
 
 public:
+	PlayerBall();
 	PlayerBall(float radius);
 	PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap);
 

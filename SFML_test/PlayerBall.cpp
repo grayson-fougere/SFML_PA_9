@@ -1,6 +1,8 @@
 #include "PlayerBall.hpp"
 #include "CollisionHelper.hpp"
 
+PlayerBall::PlayerBall() : PlayerBall(0, 0, 0, 0, { 0, 0 }) {}
+
 PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, {0, 0}) {}
 
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
