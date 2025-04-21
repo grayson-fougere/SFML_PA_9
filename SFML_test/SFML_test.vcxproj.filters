@@ -16,5 +16,6 @@
     <ClInclude Include="Background.hpp" />
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="mainMenu.hpp" />
   </ItemGroup>
 </Project>

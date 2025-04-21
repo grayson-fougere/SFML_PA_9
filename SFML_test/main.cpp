@@ -17,6 +17,7 @@ int main()
 
     sf::RectangleShape shape2({ 1600.f, 100.f });
 
+
     //sf::RectangleShape colsqr({ 100.f, 100.f });
     sf::ConvexShape trasnejdks(3);
     trasnejdks.setPoint(0, { 0.f, 0.f });

@@ -35,6 +35,7 @@
     <ClCompile Include="PlayerBall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="mainMenu.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
