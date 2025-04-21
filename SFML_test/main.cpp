@@ -2,14 +2,13 @@
 #include <SFML/Window.hpp>
 #include "PlayerBall.hpp"
 #include "Background.hpp"
+#include "Camera.hpp"
 int main()
 {
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
 
-    sf::View view({ 0.f, 0.f }, sf::Vector2f(window.getSize().x, window.getSize().y));
-
-    window.setView(view);
+    Camera viewCam(window);
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
@@ -51,6 +50,13 @@ int main()
             window.close();
         }
 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
+            viewCam.setStaticTarget(sf::Vector2f( window.getSize().x / 2, window.getSize().y / 2 ));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
+            viewCam.setDynamicTarget(player);
+        }
+
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
@@ -79,8 +85,8 @@ int main()
 
         //shape.move(velocity);
 
-        view.setCenter(player.getGlobalBounds().getCenter());
-        window.setView(view);
+        viewCam.update();
+        window.setView(viewCam);
 
         window.clear();
         WorldBackground.draw(window);
