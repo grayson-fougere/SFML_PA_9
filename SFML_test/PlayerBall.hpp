@@ -18,6 +18,7 @@ public:
 	void setGravity(float newGravity);
 	void setHasJumped(bool newJumpStatus);
 	void setNumCoins(int newNumCoins);
+	void incrementCoins();
 
 	// getters
 	sf::Vector2f getMomentum();

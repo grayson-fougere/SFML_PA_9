@@ -18,6 +18,7 @@ void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; 
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
 void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
 void PlayerBall::setNumCoins(int newNumCoins) { numCoins = newNumCoins; }
+void PlayerBall::incrementCoins() { numCoins++; }
 
 sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
 int PlayerBall::getNumCoins() { return numCoins; }
