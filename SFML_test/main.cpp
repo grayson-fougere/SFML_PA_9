@@ -45,9 +45,9 @@ int main()
     sf::Text coinCounterText(font);
     coinCounterText.setFont(font);
     coinCounterText.setString("00");
-    coinCounterText.setCharacterSize(50);
+    coinCounterText.setCharacterSize(100);
     coinCounterText.setFillColor(sf::Color::White);
-    coinCounterText.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) - 250.f, 10.f)); // so the values can convert
+    coinCounterText.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) - 175.f, 1.5f)); // so the values can convert
 
     // Mini coin sprite next to the counter
     sf::Sprite coinIcon(coinTexture);
