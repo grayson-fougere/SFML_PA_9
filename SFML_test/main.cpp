@@ -6,7 +6,9 @@
 #include <random>
 #include <sstream>
 #include "Camera.hpp"
+#include "Spike.hpp"
 #include "Obstacle.hpp"
+
 int main()
 {
     //sf::Window App
@@ -83,6 +85,8 @@ int main()
     trianslkgb.setScale({ 5.f, 5.f });
     trianslkgb.setPosition({ 800, 700 });
 
+    Spike spike({ 1000, 1000 }, 10);
+
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;
@@ -90,6 +94,7 @@ int main()
     std::vector<sf::Shape*> obstacles;
     obstacles.push_back(&trasnejdks);
     obstacles.push_back(&obs1);
+    obstacles.push_back(&spike);
 
     viewCam.updatePlayer(player);
 
@@ -154,6 +159,7 @@ int main()
         window.draw(shape3);
         window.draw(coin1);
         window.draw(coinCounterText);
+        window.draw(spike);
         window.draw(obs1);
         window.draw(coinIcon);
         //window.draw(colsqr);

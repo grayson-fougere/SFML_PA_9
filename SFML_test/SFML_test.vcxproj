@@ -26,6 +26,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugCircle.hpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Spike.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp" />
@@ -36,6 +37,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
+    <ClInclude Include="Spike.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.hpp" />
