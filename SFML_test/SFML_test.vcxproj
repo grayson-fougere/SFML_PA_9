@@ -26,6 +26,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugCircle.hpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="WorldLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp" />
@@ -36,10 +37,14 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
+    <ClInclude Include="WorldLoader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Level1.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
