@@ -108,6 +108,7 @@ int main()
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
+        window.draw(coinIcon);
         //window.draw(colsqr);
         // window.draw(colcirc1);
         // window.draw(colcirc2);
