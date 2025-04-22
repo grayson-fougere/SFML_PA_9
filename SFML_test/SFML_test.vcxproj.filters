@@ -23,6 +23,9 @@
     <ClCompile Include="PlayerBall.cpp">
       <Filter>dgskgbkjfx</Filter>
     </ClCompile>
+    <ClCompile Include="coin.cpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp">
@@ -38,6 +41,9 @@
       <Filter>dgskgbkjfx</Filter>
     </ClInclude>
     <ClInclude Include="PlayerBall.hpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClInclude>
+    <ClInclude Include="coin.hpp">
       <Filter>dgskgbkjfx</Filter>
     </ClInclude>
   </ItemGroup>
