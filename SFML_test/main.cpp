@@ -48,12 +48,12 @@ int main()
     coinCounterText.setString("00");
     coinCounterText.setCharacterSize(100);
     coinCounterText.setFillColor(sf::Color::White);
-    coinCounterText.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) - 175.f, 1.5f)); // so the values can convert
+    // call setCoinCounterOffset here and add a vector of 175 and 1.5
 
     // Mini coin sprite next to the counter
     sf::Sprite coinIcon(coinTexture);
     coinIcon.setScale(sf::Vector2f(0.2f, 0.2f)); // Smaller than the main coins
-    coinIcon.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) -300.f, 10.f));
+    // call setCoinSpriteOffset here and add a vector of 300 and 10
     
     sf::RectangleShape shape2({ 1600.f, 100.f });
     sf::RectangleShape colsqr({ 0.f, 0.f });
@@ -117,12 +117,13 @@ int main()
                 window.close();
         }
 
-        int32_t dt = deltaTimeClock.restart().asMilliseconds();
+        sf::Time dtClockRestart = deltaTimeClock.restart();  // single time var based on one point
+        int32_t dt = dtClockRestart.asMilliseconds();
         player.update(dt);
 
-        float deltaTime = deltaTimeClock.restart().asSeconds();
+        float deltaTime = dtClockRestart.asSeconds();  // this replaces the previous reset, instead converts time variable
         float playerMovement = player.getMomentum().x * deltaTime;
-        WorldBackground.scroll(-playerMovement * 0.5f);
+        WorldBackground.scroll(-playerMovement * 1.f);
 
         std::vector<sf::FloatRect> collisionBoxes;
         collisionBoxes.push_back(shape2.getGlobalBounds());
@@ -143,6 +144,8 @@ int main()
 
         viewCam.update();
         window.setView(viewCam);
+
+        // set coin sprite pos, coin counter pos, and counter text by calling the corresponding functions from Camera and Player
 
         window.clear();
         WorldBackground.draw(window);
