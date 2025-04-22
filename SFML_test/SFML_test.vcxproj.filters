@@ -7,11 +7,13 @@
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="coin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionHelper.hpp" />
     <ClInclude Include="Line.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
     <ClInclude Include="Background.hpp" />
+    <ClInclude Include="coin.hpp" />
   </ItemGroup>
 </Project>

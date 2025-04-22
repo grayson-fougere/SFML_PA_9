@@ -14,6 +14,10 @@ public:
 	void setGravity(float newGravity);
 	void setHasJumped(bool newJumpStatus);
 
+	// getters
+	sf::Vector2f getMomentum();
+
+	// update and collisions
 	void update(int32_t dt);
 	void collide(std::vector<sf::FloatRect> collisionsToCheck);
 	void collideTop(sf::RectangleShape floor);

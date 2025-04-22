@@ -15,6 +15,10 @@ void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; 
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
 void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
 
+sf::Vector2f PlayerBall::getMomentum() {
+	return _momentum;
+}
+
 void PlayerBall::update(int32_t dt) {
 	// update momentum - step 0 [input]
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) _momentum.x -= _accel * dt;
