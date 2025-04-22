@@ -5,18 +5,23 @@ class Camera : public sf::View {
 
 public:
 	Camera();
-	Camera(sf::RenderWindow &window);
-	Camera(float width, float height, float x, float y);
-	Camera(sf::FloatRect windowRect);
+	Camera(sf::RenderWindow& window);
+	Camera(sf::RenderWindow& window, PlayerBall& playerToFollow);
 
-	void changeDimensions(float width, float height);
-	void changeDimensions(sf::Vector2f dims);
+	// setters
+	void updateWindow(sf::RenderWindow& window);
+	void updatePlayer(PlayerBall& newPlayerToFollow);
+	void updateStaticCenter(sf::Vector2f newPos);
+	void updateStaticPos(sf::Vector2f newPos);
 
-	void setDynamicTarget(PlayerBall &player);
-	void setStaticTarget(sf::Vector2f pos);
-
+	// getters
 	sf::Vector2f getTargetPos();
 
+	// toggles
+	void followPlayer();
+	void followStatic();
+
+	// mainloop update func
 	void update();
 
 private:

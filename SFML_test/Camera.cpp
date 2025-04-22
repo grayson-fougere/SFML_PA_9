@@ -1,35 +1,29 @@
 #include "Camera.hpp"
 
 Camera::Camera() : staticTarget(), playerTarget(), sf::View() {
-	setStaticTarget(getCenter());
+	updateStaticPos(getCenter());
+	followStatic();
 }
-Camera::Camera(sf::RenderWindow &window) : staticTarget(), playerTarget(), sf::View(sf::FloatRect({ 0.f, 0.f }, sf::Vector2f( window.getSize().x, window.getSize().y ))) {
-	setStaticTarget(getCenter());
+Camera::Camera(sf::RenderWindow& window) : staticTarget(), playerTarget(), sf::View() {
+	updateWindow(window);
 }
-Camera::Camera(float width, float height, float x, float y) : staticTarget(), playerTarget(), sf::View(sf::FloatRect({ 0, 0 }, { width, height })) {
-	setCenter({ x,y });
-	setStaticTarget(getCenter());
-}
-Camera::Camera(sf::FloatRect windowRect) : staticTarget(), playerTarget(), sf::View(windowRect) {
-	setStaticTarget(getCenter());
-}
-
-void Camera::changeDimensions(float width, float height) {
-	setSize({ width, height });
-	setCenter(getTargetPos());
-}
-void Camera::changeDimensions(sf::Vector2f dims) {
-	setSize(dims);
-	setCenter(getTargetPos());
+Camera::Camera(sf::RenderWindow& window, PlayerBall& playerToFollow) : staticTarget(), playerTarget(), sf::View() {
+	updateWindow(window);
+	updatePlayer(playerToFollow);
+	followPlayer();
 }
 
-void Camera::setDynamicTarget(PlayerBall &player) {
-	playerTarget = &player;
-	targetType = PLAYER;
+void Camera::updateWindow(sf::RenderWindow& window) {
+	setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 }
-void Camera::setStaticTarget(sf::Vector2f pos) {
-	staticTarget = pos;
-	targetType = STATIC;
+void Camera::updatePlayer(PlayerBall& newPlayerToFollow) {
+	playerTarget = &newPlayerToFollow;
+}
+void Camera::updateStaticCenter(sf::Vector2f newPos) {
+	staticTarget = newPos;
+}
+void Camera::updateStaticPos(sf::Vector2f newPos) {
+	staticTarget = newPos + sf::Vector2f((getSize().x /2), (getSize().y /2));
 }
 
 sf::Vector2f Camera::getTargetPos() {
@@ -42,6 +36,13 @@ sf::Vector2f Camera::getTargetPos() {
 	}
 
 	return sf::Vector2f();
+}
+
+void Camera::followPlayer() {
+	targetType = PLAYER;
+}
+void Camera::followStatic() {
+	targetType = STATIC;
 }
 
 void Camera::update() {

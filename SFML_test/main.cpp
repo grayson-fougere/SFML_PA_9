@@ -95,6 +95,9 @@ int main()
     std::vector<sf::Shape*> obstacles;
     obstacles.push_back(&trasnejdks);
     obstacles.push_back(&obs1);
+
+    viewCam.updatePlayer(player);
+
     while (window.isOpen())
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
@@ -102,10 +105,15 @@ int main()
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
-            viewCam.setStaticTarget(sf::Vector2f( window.getSize().x / 2, window.getSize().y / 2 ));
+            viewCam.updateStaticPos({ 0.f, 0.f });
+            viewCam.followStatic();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
-            viewCam.setDynamicTarget(player);
+            viewCam.followPlayer();
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) {
+            viewCam.updateStaticCenter({ 0.f, 0.f });
+            viewCam.followStatic();
         }
 
         while (const std::optional event = window.pollEvent())
