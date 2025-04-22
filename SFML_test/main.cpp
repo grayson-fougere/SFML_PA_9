@@ -139,6 +139,8 @@ int main()
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
+        window.draw(coin1);
+        window.draw(coinCounterText);
         window.draw(coinIcon);
         //window.draw(colsqr);
         //window.draw(trianslkgb);
