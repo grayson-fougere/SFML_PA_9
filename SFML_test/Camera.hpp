@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerBall.hpp"
 
+// TODO: WILL NEED TO ADD CLAMPING AND LOCKS TO X AND Y POS
 class Camera : public sf::View {
 
 public:
