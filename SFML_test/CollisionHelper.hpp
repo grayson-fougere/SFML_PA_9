@@ -4,8 +4,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-// WE SHOULD MAKE A COLLIDEABLE CLASS AT SOME POINT
-// WHICH WOULD BE INHERITED BY PLAYERS/WALLS/OBSTACLES
 class CollisionHelper {
 public:
     static bool isInRange(const float& n, const float& bound1, const float& bound2) {
@@ -39,17 +37,15 @@ public:
     {
         std::vector<sf::Vector2f> intersects;
         for (int i = a.getPointCount() - 1; i >= 0; i--) {
+            const sf::Vector2f& p1 = a.getPoint(i), &p2 = (i > 0) ? a.getPoint(i - 1) : a.getPoint(a.getPointCount() - 1);
             float x1 = a.getTransform().transformPoint(a.getPoint(i)).x, y1 = a.getTransform().transformPoint(a.getPoint(i)).y,
+
                 x2 = a.getTransform().transformPoint(a.getPoint(i - 1)).x, y2 = a.getTransform().transformPoint(a.getPoint(i - 1)).y; // Start and end points of this edge
-            if (i - 1 == -1) {
-                x2 = a.getTransform().transformPoint(a.getPoint(a.getPointCount() - 1)).x, y2 = a.getTransform().transformPoint(a.getPoint(a.getPointCount() - 1)).y;
-            }
             for (int j = b.getPointCount() - 1; j >= 0; j--) {
+                const sf::Vector2f& p1 = b.getPoint(j), &p2 = (j > 0) ? b.getPoint(j - 1) : b.getPoint(b.getPointCount() - 1);
                 float x3 = b.getTransform().transformPoint(b.getPoint(j)).x, y3 = b.getTransform().transformPoint(b.getPoint(j)).y,
-                    x4 = b.getTransform().transformPoint(b.getPoint(j - 1)).x, y4 = b.getTransform().transformPoint(b.getPoint(j - 1)).y;
-                if (j - 1 == -1) {
-                    x4 = b.getTransform().transformPoint(b.getPoint(b.getPointCount() - 1)).x, y4 = b.getTransform().transformPoint(b.getPoint(b.getPointCount() - 1)).y;
-                }
+                    x4 = b.getTransform().transformPoint(p2).x, y4 = b.getTransform().transformPoint(p2).y;
+
                 std::optional v = findIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
                 if (v) {
                     intersects.push_back(v.value());
@@ -61,9 +57,3 @@ public:
         return intersects;
     }
 };
-
-// it is not appropriate for this class to have this.
-inline std::ostream& operator<<(std::ostream& lhs, const sf::Vector2f& rhs) {
-    lhs << "<" << rhs.x << ", " << rhs.y << ">" << std::endl;
-    return lhs;
-}

@@ -1,10 +1,14 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "Collidable.hpp"
 
-class PlayerBall : public sf::CircleShape {
+class PlayerBall : public sf::CircleShape, public Collidable {
 
 public:
+	PlayerBall();
 	PlayerBall(float radius);
 	PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap);
 
@@ -20,8 +24,11 @@ public:
 	// update and collisions
 	void update(int32_t dt);
 	void collide(std::vector<sf::FloatRect> collisionsToCheck);
+	void collideObstacles(std::vector<sf::ConvexShape> obstacles);
 	void collideTop(sf::RectangleShape floor);
 	void collideView(sf::Vector2u windowSize);
+
+	void onCollide(Collidable& obj);
 
 private:
 	sf::Vector2f _momentum;

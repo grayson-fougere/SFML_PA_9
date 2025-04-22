@@ -21,14 +21,17 @@
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="coin.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugCircle.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp" />
     <ClInclude Include="coin.hpp" />
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="CollisionHelper.hpp" />
-    <ClInclude Include="Line.hpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
