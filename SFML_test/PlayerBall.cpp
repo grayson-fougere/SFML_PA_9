@@ -89,9 +89,10 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 	}
 }
 
-void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
-	for (auto obst : obstacles) {
-		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, obst);
+void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
+	for (int i = 0; i < obstacles.size(); i++) {
+		sf::Shape* &obst = obstacles[i];
+		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });
 			applyCollisionForces(intersectingPoints, this);
@@ -150,6 +151,15 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 	_momentum = { newXMom, newYMom };
 }
 
-void PlayerBall::onCollide(Collidable& obj)
+void PlayerBall::onCollide(Collidable* obj)
 {
+	std::cout << obj->getTag() << std::endl;
+	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
+		kill();
+	}
+}
+
+void PlayerBall::kill()
+{
+	std::cout << "I AM DEAD!!!" << sf::Vector2f().normalized() << std::endl;
 }

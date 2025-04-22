@@ -20,11 +20,12 @@ public:
 
 	void update(int32_t dt);
 	void collide(std::vector<sf::FloatRect> collisionsToCheck);
-	void collideObstacles(std::vector<sf::ConvexShape> obstacles);
+	void collideObstacles(std::vector<sf::Shape*> obstacles);
 	void collideTop(sf::RectangleShape floor);
 	void collideView(sf::Vector2u windowSize);
 
-	void onCollide(Collidable& obj);
+	void onCollide(Collidable* obj) override;
+	void kill();
 
 private:
 	sf::Vector2f _momentum;

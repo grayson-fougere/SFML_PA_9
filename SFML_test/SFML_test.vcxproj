@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -24,6 +24,7 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugCircle.hpp" />
+    <ClCompile Include="Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="PlayerBall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -51,6 +51,11 @@ std::vector<sf::Vector2f> Collidable::findAllIntersections(sf::Shape& a, sf::Sha
             }
         }
     }
+    Collidable* b_col = dynamic_cast<Collidable*>(&b);
+    std::cout << (b_col == nullptr) << std::endl;
+    if (intersects.size() > 0 && b_col) {
+        onCollide(b_col);
+    }
     return intersects;
 }
 
