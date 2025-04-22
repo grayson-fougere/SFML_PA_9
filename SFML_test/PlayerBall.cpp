@@ -6,7 +6,7 @@ PlayerBall::PlayerBall() : PlayerBall(0, 0, 0, 0, { 0, 0 }) {}
 PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, {0, 0}) {}
 
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
-		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), sf::CircleShape(radius), Collidable("Player") {
+		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), numCoins(0), sf::CircleShape(radius), Collidable("Player") {
 
 	_ballTexture = sf::Texture(sf::Image("Textures/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
 
@@ -17,10 +17,11 @@ void PlayerBall::setAccel(float newAccel) { _accel = newAccel; }
 void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; }
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
 void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
+void PlayerBall::setNumCoins(int newNumCoins) { numCoins = newNumCoins; }
+void PlayerBall::incrementCoins() { numCoins++; }
 
-sf::Vector2f PlayerBall::getMomentum() {
-	return _momentum;
-}
+sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
+int PlayerBall::getNumCoins() { return numCoins; }
 
 void PlayerBall::update(int32_t dt) {
 	// update momentum - step 0 [input]
