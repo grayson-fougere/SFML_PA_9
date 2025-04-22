@@ -3,58 +3,67 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Background.cpp">
-      <Filter>gukewrt</Filter>
+      <Filter>Game Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>gukewrt</Filter>
+      <Filter>Game Helpers</Filter>
     </ClCompile>
     <ClCompile Include="DebugCircle.hpp">
-      <Filter>qwertycb</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Collidable.cpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.cpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.hpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Base Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="PlayerBall.cpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="coin.cpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp">
-      <Filter>gukewrt</Filter>
+      <Filter>Game Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Camera.hpp">
-      <Filter>gukewrt</Filter>
+      <Filter>Game Helpers</Filter>
     </ClInclude>
     <ClInclude Include="CollisionHelper.hpp">
-      <Filter>qwertycb</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Collidable.hpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Base Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.hpp">
+      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="PlayerBall.hpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="coin.hpp">
-      <Filter>dgskgbkjfx</Filter>
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="gukewrt">
-      <UniqueIdentifier>{a25a89ec-03b6-43bb-a47f-e93d25d4ed73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="qwertycb">
+    <Filter Include="Utils">
       <UniqueIdentifier>{dc43e905-9594-49bb-91c8-552432e6b088}</UniqueIdentifier>
     </Filter>
-    <Filter Include="dgskgbkjfx">
+    <Filter Include="Game Helpers">
+      <UniqueIdentifier>{a25a89ec-03b6-43bb-a47f-e93d25d4ed73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{3be63dd6-d9dc-44aa-9b74-5e5417e80420}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base Classes">
       <UniqueIdentifier>{c5019821-2cc1-4efa-aae1-df2417d310aa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
