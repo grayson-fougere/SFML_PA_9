@@ -12,6 +12,9 @@ int main()
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
 
+    // opens a font
+    sf::Font font("Resources/freedom-font.ttf");
+
     sf::Image coinImage;
     if (!coinImage.loadFromFile("Textures/coinpicture.png")) {
         return -1; // Error handling
@@ -33,32 +36,24 @@ int main()
     int coinCount = 0;
 
 
-    // Randomly place a coin
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> xDist(50, window.getSize().x - 50);
-    std::uniform_int_distribution<> yDist(50, window.getSize().y - 50);
-
-    coins.emplace_back(coinTexture, xDist(gen), yDist(gen));
-
-    // --- COIN COUNTER (Text + Sprite) ---
-    sf::Font font;
-
-    // ******* removed logic to add a font, add that later
+    // placing a coin
+    sf::Sprite coin1(coinTexture);
+    coin1.setScale(sf::Vector2f(0.3f, 0.3f)); // main coin size
+    coin1.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) -2100.f, window.getSize().y - 1500.f));
 
 
+    // font placement logic
     sf::Text coinCounterText(font);
-    coinCounterText.setString("0");
-    coinCounterText.setCharacterSize(30);
-    coinCounterText.setFillColor(sf::Color::Yellow);
-    coinCounterText.setPosition(sf::Vector2f(
-        static_cast<float>(window.getSize().x) - 120.f, 20.f)); // so the values can convert
+    coinCounterText.setFont(font);
+    coinCounterText.setString("00");
+    coinCounterText.setCharacterSize(100);
+    coinCounterText.setFillColor(sf::Color::White);
+    coinCounterText.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) - 175.f, 1.5f)); // so the values can convert
 
     // Mini coin sprite next to the counter
     sf::Sprite coinIcon(coinTexture);
-    coinIcon.setScale(sf::Vector2f(0.5f, 0.5f)); // Smaller than the main coins
-    coinIcon.setPosition(sf::Vector2f(
-        static_cast<float>(window.getSize().x) - 50.f, 20.f));
+    coinIcon.setScale(sf::Vector2f(0.2f, 0.2f)); // Smaller than the main coins
+    coinIcon.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) -300.f, 10.f));
     
     sf::RectangleShape shape2({ 1600.f, 100.f });
     sf::RectangleShape colsqr({ 0.f, 0.f });
@@ -154,6 +149,8 @@ int main()
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
+        window.draw(coin1);
+        window.draw(coinCounterText);
         window.draw(obs1);
         window.draw(coinIcon);
         //window.draw(colsqr);

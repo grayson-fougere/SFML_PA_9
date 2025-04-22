@@ -32,9 +32,26 @@ Background::Background() {
 
 void Background::draw(sf::RenderWindow& window) {
     for (auto& layer : layers) {
-        window.draw(layer.sprite);
+        sf::Vector2f position = layer.sprite.getPosition();
+        float layerWidth = layer.texture.getSize().x * layer.sprite.getScale().x;
+        float windowWidth = static_cast<float>(window.getSize().x);
+
+        // Draw enough repeated copies of the layer to fill the screen horizontally
+        for (float x = position.x; x < windowWidth; x += layerWidth) {
+            layer.sprite.setPosition(sf::Vector2f(static_cast<float>(x), 0.f));
+            window.draw(layer.sprite);
+        }
+
+        // Handle potential gap on the left side when scrolling left
+        if (position.x > 0) {
+            for (float x = position.x - layerWidth; x > -layerWidth; x -= layerWidth) {
+                layer.sprite.setPosition(sf::Vector2f(static_cast<float>(x), 0.f));
+                window.draw(layer.sprite);
+            }
+        }
     }
 }
+
 
 void Background::resize(sf::Vector2u windowSize) {
     for (auto& layer : layers) {
@@ -51,18 +68,16 @@ void Background::resize(sf::Vector2u windowSize) {
 void Background::scroll(float offset) {
     for (auto& layer : layers) {
         float layerOffset = offset * layer.scrollSpeed;
-        auto position = layer.sprite.getPosition();
-        position.x += layerOffset;
+        sf::Vector2f pos = layer.sprite.getPosition();
+        pos.x += layerOffset;
 
-        const float scaledWidth = layer.texture.getSize().x * layer.sprite.getScale().x;
+        // Wrap horizontally
+        float textureWidth = layer.texture.getSize().x * layer.sprite.getScale().x;
+        if (pos.x <= -textureWidth)
+            pos.x += textureWidth;
+        else if (pos.x >= textureWidth)
+            pos.x -= textureWidth;
 
-        if (position.x <= -scaledWidth) {
-            position.x += scaledWidth;
-        }
-        else if (position.x >= scaledWidth) {
-            position.x -= scaledWidth;
-        }
-
-        layer.sprite.setPosition(position);
+        layer.sprite.setPosition(pos);
     }
 }
