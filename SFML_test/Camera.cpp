@@ -1,7 +1,7 @@
 #include "Camera.hpp"
 
 Camera::Camera() : staticTarget(), playerTarget(), sf::View() {
-	updateStaticPos(getCenter());
+	updateStaticPos(sf::Vector2f());
 	followStatic();
 }
 Camera::Camera(sf::RenderWindow& window) : staticTarget(), playerTarget(), sf::View() {
