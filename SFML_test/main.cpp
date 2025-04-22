@@ -117,12 +117,13 @@ int main()
                 window.close();
         }
 
-        int32_t dt = deltaTimeClock.restart().asMilliseconds();
+        sf::Time dtClockRestart = deltaTimeClock.restart();  // single time var based on one point
+        int32_t dt = dtClockRestart.asMilliseconds();
         player.update(dt);
 
-        float deltaTime = deltaTimeClock.restart().asSeconds();
+        float deltaTime = dtClockRestart.asSeconds();  // this replaces the previous reset, instead converts time variable
         float playerMovement = player.getMomentum().x * deltaTime;
-        WorldBackground.scroll(-playerMovement * 0.5f);
+        WorldBackground.scroll(-playerMovement * 1.f);
 
         std::vector<sf::FloatRect> collisionBoxes;
         collisionBoxes.push_back(shape2.getGlobalBounds());
