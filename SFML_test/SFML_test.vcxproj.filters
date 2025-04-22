@@ -2,19 +2,60 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="DebugCircle.hpp" />
-    <ClCompile Include="Obstacle.cpp" />
-    <ClCompile Include="Obstacle.hpp" />
-    <ClCompile Include="PlayerBall.cpp" />
-    <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Collidable.cpp" />
-    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Background.cpp">
+      <Filter>gukewrt</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>gukewrt</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCircle.hpp">
+      <Filter>qwertycb</Filter>
+    </ClCompile>
+    <ClCompile Include="Collidable.cpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.cpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.hpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerBall.cpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClCompile>
+    <ClCompile Include="coin.cpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CollisionHelper.hpp" />
-    <ClInclude Include="PlayerBall.hpp" />
-    <ClInclude Include="Background.hpp" />
-    <ClInclude Include="Collidable.hpp" />
-    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Background.hpp">
+      <Filter>gukewrt</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.hpp">
+      <Filter>gukewrt</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionHelper.hpp">
+      <Filter>qwertycb</Filter>
+    </ClInclude>
+    <ClInclude Include="Collidable.hpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBall.hpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClInclude>
+    <ClInclude Include="coin.hpp">
+      <Filter>dgskgbkjfx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="gukewrt">
+      <UniqueIdentifier>{a25a89ec-03b6-43bb-a47f-e93d25d4ed73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qwertycb">
+      <UniqueIdentifier>{dc43e905-9594-49bb-91c8-552432e6b088}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dgskgbkjfx">
+      <UniqueIdentifier>{c5019821-2cc1-4efa-aae1-df2417d310aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

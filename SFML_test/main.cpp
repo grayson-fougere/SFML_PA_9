@@ -2,6 +2,9 @@
 #include <SFML/Window.hpp>
 #include "PlayerBall.hpp"
 #include "Background.hpp"
+#include "coin.hpp"
+#include <random>
+#include <sstream>
 #include "Camera.hpp"
 #include "Obstacle.hpp"
 int main()
@@ -9,13 +12,56 @@ int main()
     //sf::Window App
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
 
+    sf::Image coinImage;
+    if (!coinImage.loadFromFile("Textures/coinpicture.png")) {
+        return -1; // Error handling
+    }
+
+    sf::Texture coinTexture;
+    if (!coinTexture.loadFromImage(coinImage)) {
+        return -1; // Error handling
+    }
+    
     Camera viewCam(window);
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
     PlayerBall player = PlayerBall(100, 0.25f, 5.f, 0.15f, {10.f, 10.f});
 
+    // --- COIN SYSTEM ---
+    std::vector<Coin> coins;
+    int coinCount = 0;
+
+
+    // Randomly place a coin
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> xDist(50, window.getSize().x - 50);
+    std::uniform_int_distribution<> yDist(50, window.getSize().y - 50);
+
+    coins.emplace_back(coinTexture, xDist(gen), yDist(gen));
+
+    // --- COIN COUNTER (Text + Sprite) ---
+    sf::Font font;
+
+    // ******* removed logic to add a font, add that later
+
+
+    sf::Text coinCounterText(font);
+    coinCounterText.setString("0");
+    coinCounterText.setCharacterSize(30);
+    coinCounterText.setFillColor(sf::Color::Yellow);
+    coinCounterText.setPosition(sf::Vector2f(
+        static_cast<float>(window.getSize().x) - 120.f, 20.f)); // so the values can convert
+
+    // Mini coin sprite next to the counter
+    sf::Sprite coinIcon(coinTexture);
+    coinIcon.setScale(sf::Vector2f(0.5f, 0.5f)); // Smaller than the main coins
+    coinIcon.setPosition(sf::Vector2f(
+        static_cast<float>(window.getSize().x) - 50.f, 20.f));
+    
     sf::RectangleShape shape2({ 1600.f, 100.f });
+    sf::RectangleShape colsqr({ 0.f, 0.f });
 
 
     Obstacle obs1({100, 100}, {300, 1000});
@@ -26,7 +72,8 @@ int main()
     trasnejdks.setPoint(2, { 0.f, -100.f });
     trasnejdks.setFillColor(sf::Color::Red);
     trasnejdks.setScale({ 2.5f, 2.5f });
-    trasnejdks.setPosition({ 0, 1600 });
+    trasnejdks.setPosition({ 0, 1800 });
+
     shape2.setFillColor(sf::Color::Blue);
     shape2.setPosition({ 0.f, 800.f });
     sf::RectangleShape shape3({ 50.f, 500.f });
@@ -70,6 +117,10 @@ int main()
         int32_t dt = deltaTimeClock.restart().asMilliseconds();
         player.update(dt);
 
+        float deltaTime = deltaTimeClock.restart().asSeconds();
+        float playerMovement = player.getMomentum().x * deltaTime;
+        WorldBackground.scroll(-playerMovement * 0.5f);
+
         std::vector<sf::FloatRect> collisionBoxes;
         collisionBoxes.push_back(shape2.getGlobalBounds());
         collisionBoxes.push_back(shape3.getGlobalBounds());
@@ -96,6 +147,9 @@ int main()
         window.draw(shape2);
         window.draw(shape3);
         window.draw(obs1);
+        window.draw(coinIcon);
+        //window.draw(colsqr);
+        //window.draw(trianslkgb);
         window.draw(trasnejdks);
         // window.draw(colcirc1);
         // window.draw(colcirc2);

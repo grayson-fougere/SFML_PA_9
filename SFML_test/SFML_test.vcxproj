@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="coin.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="main.cpp" />
@@ -28,6 +29,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp" />
+    <ClInclude Include="coin.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Collidable.hpp" />
     <ClInclude Include="CollisionHelper.hpp" />
