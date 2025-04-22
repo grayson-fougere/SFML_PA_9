@@ -12,9 +12,9 @@ Obstacle::Obstacle(sf::Vector2f size, sf::Vector2f position)
 	setPosition(position);
 }
 
-void Obstacle::onCollide(Collidable& obj)
+void Obstacle::onCollide(Collidable* obj)
 {
-	if (obj.getTag() == "Player") {
+	if (obj->getTag() == "Player") {
 		// kill player
 	}
 }

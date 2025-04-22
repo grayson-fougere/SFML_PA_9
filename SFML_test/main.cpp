@@ -6,6 +6,7 @@
 #include <random>
 #include <sstream>
 #include "Camera.hpp"
+#include "Obstacle.hpp"
 int main()
 {
     //sf::Window App
@@ -62,6 +63,8 @@ int main()
     sf::RectangleShape shape2({ 1600.f, 100.f });
     sf::RectangleShape colsqr({ 0.f, 0.f });
 
+
+    Obstacle obs1({100, 100}, {300, 1000});
     //sf::RectangleShape colsqr({ 100.f, 100.f });
     sf::ConvexShape trasnejdks(3);
     trasnejdks.setPoint(0, { 0.f, 0.f });
@@ -82,15 +85,16 @@ int main()
     trianslkgb.setPoint(1, { 50, 50 });
     trianslkgb.setPoint(2, { 25, 0 });
     trianslkgb.setFillColor(sf::Color::Green);
-    trianslkgb.setScale({ 3.f, 3.f });
+    trianslkgb.setScale({ 5.f, 5.f });
     trianslkgb.setPosition({ 800, 700 });
 
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;
 
-    std::vector<sf::ConvexShape> obstacles;
-    obstacles.push_back(trianslkgb);
+    std::vector<sf::Shape*> obstacles;
+    obstacles.push_back(&trasnejdks);
+    obstacles.push_back(&obs1);
     while (window.isOpen())
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
@@ -123,9 +127,7 @@ int main()
 
         player.collide(collisionBoxes);
 
-        std::vector<sf::ConvexShape> obstacles;
         //obstacles.push_back(trianslkgb);
-        obstacles.push_back(trasnejdks);
 
         player.collideObstacles(obstacles);
 
@@ -144,6 +146,7 @@ int main()
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
+        window.draw(obs1);
         window.draw(coinIcon);
         //window.draw(colsqr);
         //window.draw(trianslkgb);
