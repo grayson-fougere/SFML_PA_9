@@ -17,9 +17,11 @@ public:
 	void setMoveSpeedCap(sf::Vector2f newCap);
 	void setGravity(float newGravity);
 	void setHasJumped(bool newJumpStatus);
+	void setNumCoins(int newNumCoins);
 
 	// getters
 	sf::Vector2f getMomentum();
+	int getNumCoins();
 
 	// update and collisions
 	void update(int32_t dt);
@@ -37,6 +39,7 @@ private:
 	float _accel;
 	float _jump;
 	bool hasJumped;
+	int numCoins;
 	sf::Vector2f _moveSpeedCap;
 	sf::Texture _ballTexture;
 };
