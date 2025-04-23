@@ -4,6 +4,8 @@
 #include "coin.hpp"
 #include "Camera.hpp"
 #include <fstream>
+#include <sstream>
+#include "Platform.hpp"
 
 /*
 What the characters mean in a level file:
@@ -31,7 +33,7 @@ class WorldLoader {
 
 public:
 	static void loadLevel(std::string levelName,	// what level to load. relative path.
-		std::vector<Collidable>& worldObjects,		// objects in world that inherit from Collidable
+		std::vector<Collidable*>& worldObjects,		// objects in world that inherit from Collidable
 		std::vector<Coin>& coins,					// coins in world
 		std::string& finishLoad,						// level to load when finish is reached
 		std::vector<std::string>& otherLoads,		// levels to load when a load trigger is reached
