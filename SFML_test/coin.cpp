@@ -1,14 +1,15 @@
 #include "coin.hpp"
 
-// Constructor: Initialize sprite with texture, then set position and scale
-Coin::Coin(const sf::Texture& texture, float x, float y)
-    : sprite(texture)  // initialize sprite with texture
+// Constructor
+Coin::Coin(const sf::Texture& texture, const sf::Vector2f& position)
+    : sprite(texture)  // Initialize sprite with texture here
 {
-    sprite.setPosition(sf::Vector2f(300.0f, 300.0f));         // Set position
-    sprite.setScale(sf::Vector2f(2.0f, 2.0f));      // Scale it up
+    // then set other properties
+    sprite.setPosition(position);
+    sprite.setScale(sf::Vector2f(0.3f, 0.3f));
 }
 
-void Coin::draw(sf::RenderWindow& window) {
+void Coin::draw(sf::RenderWindow& window) const {
     window.draw(sprite);
 }
 
