@@ -65,17 +65,21 @@ std::vector<sf::Vector2f> Collidable::findAllIntersections(sf::Shape& a, sf::Sha
 }
 
 
-void Collidable::applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape)
+
+sf::Vector2f Collidable::applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape)
 {
     if (intersections.size() >= 2) {
-        const sf::Vector2f& p1 = intersections[0], & p2 = intersections[1], diff = p2 - p1, mid = p1 + (diff * 0.5f), norm = diff.perpendicular();
+        const sf::Vector2f& p1 = intersections[0], & p2 = intersections[1], diff = p2 - p1, mid = p1 + (diff * 0.5f), norm = diff.perpendicular(),
+            shapeCenter = moveShape->getTransform().transformPoint(moveShape->getGeometricCenter());
         //float moveSize = (mid - moveShape->getTransform().transformPoint(moveShape->getGeometricCenter())).length();
-        float moveMagnitude = 15;
-        if (distanceBetween(mid + norm.normalized() * moveMagnitude, moveShape->getTransform().transformPoint(moveShape->getGeometricCenter())) > 
-            distanceBetween(mid + norm.normalized() * -moveMagnitude, moveShape->getTransform().transformPoint(moveShape->getGeometricCenter()))) {
+        //float moveMagnitude = 15;
+        float moveMagnitude = distanceBetween(p1, shapeCenter) - distanceBetween(mid, shapeCenter);
+        if (distanceBetween(mid + norm.normalized() * moveMagnitude, shapeCenter) > 
+            distanceBetween(mid + norm.normalized() * -moveMagnitude, shapeCenter)) {
             moveMagnitude *= -1;
         }
         moveShape->move(norm.normalized()*moveMagnitude);
+        return norm.normalized() * moveMagnitude;
     }
 }
 

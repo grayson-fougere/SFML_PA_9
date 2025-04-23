@@ -38,6 +38,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
+    <ClInclude Include="Mathf.hpp" />
     <ClInclude Include="Platform.hpp" />
     <ClInclude Include="Spike.hpp" />
   </ItemGroup>

@@ -32,7 +32,7 @@ int main()
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
-    PlayerBall player = PlayerBall(100, 0.25f, 5.f, 0.15f, {10.f, 10.f});
+    PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, {10.f, 10.f});
 
     // --- COIN SYSTEM ---
     std::vector<Coin> coins;
@@ -87,7 +87,7 @@ int main()
     trianslkgb.setPosition({ 800, 700 });
 
     Spike spike({ 1000, 1000 }, 10);
-    Platform plat1(sf::Vector2f(3000.f, 900.f), 1000, 100, sf::Color::Magenta);
+    Platform plat1(sf::Vector2f(3000.f, 1000.f), 1000, 1000, sf::Color::Magenta);
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;

@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "Collidable.hpp"
+#include "Mathf.hpp"
 
 class PlayerBall : public sf::CircleShape, public Collidable {
 

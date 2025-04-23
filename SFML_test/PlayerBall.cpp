@@ -1,5 +1,4 @@
 #include "PlayerBall.hpp"
-#include "CollisionHelper.hpp"
 
 PlayerBall::PlayerBall() : PlayerBall(0, 0, 0, 0, { 0, 0 }) {}
 
@@ -38,6 +37,8 @@ void PlayerBall::update(int32_t dt) {
 	// add gravity
 	_momentum.y += _gravity * dt;
 
+	_momentum.x = Mathf::clamp(_momentum.x, -50, 50);
+	_momentum.y = Mathf::clamp(_momentum.y, -100, 100);
 	// apply movement - step 1 of whiteboard
 	move(_momentum);
 }
@@ -116,7 +117,8 @@ void PlayerBall::collidePlatorms(std::vector<sf::Shape*> platforms) {
 		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			// This should be moved to onCollide?
-			applyCollisionForces(intersectingPoints, this);
+			sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
+			_momentum = _momentum.projectedOnto(force.perpendicular());
 		}
 	}
 }
@@ -169,7 +171,8 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 void PlayerBall::onCollide(Collidable* obj)
 {
 	std::cout << obj->getTag() << std::endl;
-	_momentum = { 0, 0 };
+	//_momentum*=0.f;
+	hasJumped = false;
 	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
 		kill();
 	}
