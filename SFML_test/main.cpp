@@ -10,6 +10,8 @@
 #include "Obstacle.hpp"
 #include "Platform.hpp"
 
+#include <optional>
+#include <SFML/Audio.hpp>
 int main()
 {
     //sf::Window App
@@ -28,22 +30,47 @@ int main()
         return -1; // Error handling
     }
     
+
+
     Camera viewCam(window);
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
     PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, {10.f, 10.f});
 
-    // --- COIN SYSTEM ---
+    sf::Music backgroundMusic;
+
+    if (!backgroundMusic.openFromFile("Resources/Gamesong.mp3")) { // All rights go to ConcernedApe and Chucklefish (Music from Stardew Valley)
+        std::cerr << "Failed to load background music!\n";
+    }
+    else {
+        backgroundMusic.setLooping(true);       // Loop indefinitely
+        backgroundMusic.setVolume(80.f);    
+        backgroundMusic.play();              // Start song
+    }
+    bool coinActive = true;
+
+    // Initialize coins
     std::vector<Coin> coins;
-    int coinCount = 0;
+    coins.emplace_back(coinTexture, sf::Vector2f(window.getSize().x - 2100.f, window.getSize().y - 1500.f));
+    coins.emplace_back(coinTexture, sf::Vector2f(800.f, 600.f));
+    coins.emplace_back(coinTexture, sf::Vector2f(1200.f, 400.f));
+    
+    sf::SoundBuffer coinBuffer;
+    std::optional<sf::Sound> coinSound;
 
+    if (coinBuffer.loadFromFile("Resources/coin.wav")) {
+        coinSound.emplace(coinBuffer);  
+        coinSound->setVolume(25);
+    }
 
-    // placing a coin
-    sf::Sprite coin1(coinTexture);
-    coin1.setScale(sf::Vector2f(0.3f, 0.3f)); // main coin size
-    coin1.setPosition(sf::Vector2f(static_cast<float>(window.getSize().x) -2100.f, window.getSize().y - 1500.f));
-
+    sf::SoundBuffer jumpBuffer;
+    if (jumpBuffer.loadFromFile("Resources/jump.wav")) {
+        player.setJumpSound(jumpBuffer);  // Pass to player
+    }
+    else {
+        std::cout << "Couldn't load jump sound\n";
+    }
 
     // font placement logic
     sf::Text coinCounterText(font);
@@ -51,12 +78,14 @@ int main()
     coinCounterText.setString("00");
     coinCounterText.setCharacterSize(100);
     coinCounterText.setFillColor(sf::Color::White);
-    // call setCoinCounterOffset here and add a vector of 175 and 1.5
+    viewCam.setCoinCounterOffset(sf::Vector2f(175, 1.5));
+   
 
     // Mini coin sprite next to the counter
     sf::Sprite coinIcon(coinTexture);
     coinIcon.setScale(sf::Vector2f(0.2f, 0.2f)); // Smaller than the main coins
-    // call setCoinSpriteOffset here and add a vector of 300 and 10
+    
+    viewCam.setCoinSpriteOffset(sf::Vector2f(300, 10));
     
     sf::RectangleShape shape2({ 1600.f, 100.f });
     sf::RectangleShape colsqr({ 0.f, 0.f });
@@ -101,23 +130,11 @@ int main()
     platforms.push_back(&plat1);
 
     viewCam.updatePlayer(player);
-
+    viewCam.followPlayer();
     while (window.isOpen())
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num1)) {
-            viewCam.updateStaticPos({ 0.f, 0.f });
-            viewCam.followStatic();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num2)) {
-            viewCam.followPlayer();
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Num3)) {
-            viewCam.updateStaticCenter({ 0.f, 0.f });
-            viewCam.followStatic();
         }
 
         while (const std::optional event = window.pollEvent())
@@ -134,6 +151,28 @@ int main()
         float playerMovement = player.getMomentum().x * deltaTime;
         WorldBackground.scroll(-playerMovement * 1.f);
 
+
+
+        for (int i = 0; i < coins.size(); i++) {
+            if (player.getGlobalBounds().findIntersection(coins[i].getSprite().getGlobalBounds())) {
+                if (coinSound.has_value()) {
+                    coinSound->play();
+                }
+                player.incrementCoins();
+                coins.erase(coins.begin() + i);
+                i--; // Adjust index after removal of the vector
+
+
+                // formatted the counter to keep the 0
+                std::stringstream ss;
+                ss << std::setw(2) << std::setfill('0') << player.getNumCoins();
+                coinCounterText.setString(ss.str());
+
+                
+
+                break; // Exit after collecting one coin per frame
+            }
+        }
         std::vector<sf::FloatRect> collisionBoxes;
         collisionBoxes.push_back(shape2.getGlobalBounds());
         collisionBoxes.push_back(shape3.getGlobalBounds());
@@ -147,7 +186,7 @@ int main()
         player.collidePlatorms(platforms);
 
         //player.collideTop(shape2);
-        player.collideView(window.getSize());
+        /*player.collideView(window.getSize());*/
 
         //still need to add drag
 
@@ -157,13 +196,17 @@ int main()
         window.setView(viewCam);
 
         // set coin sprite pos, coin counter pos, and counter text by calling the corresponding functions from Camera and Player
+        coinCounterText.setPosition(viewCam.getCoinCounterPos());
+        coinIcon.setPosition(viewCam.getCoinSpritePos());
 
         window.clear();
         WorldBackground.draw(window);
         window.draw(player);
         window.draw(shape2);
         window.draw(shape3);
-        window.draw(coin1);
+        for (auto& coin : coins) {
+            window.draw(coin.getSprite());
+        }
         window.draw(coinCounterText);
         window.draw(spike);
         window.draw(obs1);
