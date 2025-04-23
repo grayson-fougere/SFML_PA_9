@@ -22,7 +22,7 @@ void PlayerBall::setNumCoins(int newNumCoins) { numCoins = newNumCoins; }
 void PlayerBall::incrementCoins() { numCoins++; }
 void PlayerBall::setJumpSound(const sf::SoundBuffer& buffer) {
 	jumpSound.emplace(buffer);
-	jumpSound->setVolume(30.f);  
+	jumpSound->setVolume(20.f);  
 }
 sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
 int PlayerBall::getNumCoins() { return numCoins; }

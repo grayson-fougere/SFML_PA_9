@@ -44,9 +44,9 @@ sf::Vector2f Camera::getTargetPos() {
 	switch (targetType) {
 	case PLAYER:
 		if (playerTarget != nullptr) {
-			// Only take the X position from player, keep existing Y
+			
 			target.x = playerTarget->getPosition().x;
-			target.y = getCenter().y; // Keep current vertical position
+			target.y = getCenter().y; 
 		}
 		else {
 			target = staticTarget;
