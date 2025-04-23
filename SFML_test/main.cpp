@@ -110,6 +110,15 @@ int main()
         }
     }
 
+    std::vector <Spike*> spikes;
+    for (auto obj : worldObjects) {
+        Spike* spike_ptr = dynamic_cast<Spike*>(obj);
+        if (spike_ptr != nullptr) {
+            spikes.push_back(spike_ptr);
+        }
+    }
+
+
     /* ----- OLD WORLD STUFF ----- */
 
     //bool coinActive = true;
@@ -215,7 +224,7 @@ int main()
         player.collide(collisionBoxes);
 
         // These should prob be merged?
-        //player.collideObstacles(obstacles);
+        player.collideObstacles(spikes);
         player.collidePlatorms(platforms);
 
         /* ----- Update Camera, Coin Icon, & Coin Text ----- */

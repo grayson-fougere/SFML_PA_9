@@ -102,9 +102,9 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 	}
 }
 
-void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
+void PlayerBall::collideObstacles(std::vector<Spike*> obstacles) {
 	for (int i = 0; i < obstacles.size(); i++) {
-		sf::Shape* &obst = obstacles[i];
+		sf::Shape* obst = dynamic_cast<sf::Shape*>(obstacles[i]);
 		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });

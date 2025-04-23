@@ -76,6 +76,12 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 					case 'c': {
 						Coin* newCoin = new Coin(coinTexture, { cur_x, cur_y });
 						coins.push_back(newCoin);
+						break;
+					}
+					case 's': {
+						Spike* newSpike = new Spike({ cur_x, cur_y + (SQ_SIZE*2.f) }, SQ_SIZE / 10.f, sf::Color::Red);
+						worldObjects.push_back(newSpike);
+						break;
 					}
 				}
 

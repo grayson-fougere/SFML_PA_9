@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include "Platform.hpp"
+#include "Spike.hpp"
 
 /*
 What the characters mean in a level file:
