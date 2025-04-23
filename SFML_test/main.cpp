@@ -174,26 +174,38 @@ int main()
     sf::Text playButton(font, "Play", 48);
     sf::Text creditsButton(font, "Credits", 48);
     sf::Text exitButton(font, "Exit", 48);
+    sf::Text creditsTitle(font, "Game Created By:", 140);
+    sf::Text logkenCredits(font, "Logan Meyers,   Kenny Hussey", 70);
+    sf::Text magraCredits(font, "Mason Nagel,     Grayson Fougere", 70);
+    sf::Text backButton(font, "Back", 48);
 
     //changes origin of text boxes to center so when changing position it is in the center of the screen
     gameTitle.setOrigin({ gameTitle.getGlobalBounds().getCenter().x, gameTitle.getGlobalBounds().getCenter().y });
     playButton.setOrigin({ playButton.getGlobalBounds().getCenter().x, playButton.getGlobalBounds().getCenter().y });
     creditsButton.setOrigin({ creditsButton.getGlobalBounds().getCenter().x, creditsButton.getGlobalBounds().getCenter().y });
     exitButton.setOrigin({ exitButton.getGlobalBounds().getCenter().x, exitButton.getGlobalBounds().getCenter().y });
-
+    creditsTitle.setOrigin({ creditsTitle.getGlobalBounds().getCenter().x, creditsTitle.getGlobalBounds().getCenter().y });
+    logkenCredits.setOrigin({ logkenCredits.getGlobalBounds().getCenter().x, logkenCredits.getGlobalBounds().getCenter().y });
+    magraCredits.setOrigin({ magraCredits.getGlobalBounds().getCenter().x, magraCredits.getGlobalBounds().getCenter().y });
+    backButton.setOrigin({ backButton.getGlobalBounds().getCenter().x, backButton.getGlobalBounds().getCenter().y });
 
     //sets position of the text boxes
     gameTitle.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 200});
     playButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 75});
     creditsButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f});
     exitButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 75 });
-    
+    creditsTitle.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 200 });
+    logkenCredits.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 75 });
+    magraCredits.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f });
+    backButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 150});
+
     /* ----- Main Loop ----- */
     while (window.isOpen())
     {
         
-        
+        //when main menu is open
         if (mainMenuOpen == true) {
+            window.clear();
             window.draw(gameTitle);
             window.draw(playButton);
             window.draw(creditsButton);
@@ -214,10 +226,34 @@ int main()
                 }
             }
             else { exitButton.setFillColor(sf::Color::White); }
+            if (creditsButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
+                creditsButton.setFillColor(sf::Color::Red);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    optionSelected = 2;
+                    mainMenuOpen = false;
+                }
+            }
+            else { creditsButton.setFillColor(sf::Color::White); }
         }
 
 
+        //credits open
+        if (optionSelected == 2) {
+            window.clear();
+            window.draw(backButton);
+            window.draw(logkenCredits);
+            window.draw(magraCredits);
+            window.draw(creditsTitle);
 
+            if (backButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
+                backButton.setFillColor(sf::Color::Red);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    mainMenuOpen = true;
+                    optionSelected = 0;
+                }
+            }
+            else { backButton.setFillColor(sf::Color::White); }
+        }
 
 
 
@@ -234,79 +270,79 @@ int main()
         }
 
         if (optionSelected == 1) {
-        /* ----- Get DeltaTime -----*/
-        sf::Time dtClockRestart = deltaTimeClock.restart();
-        int32_t dt_ms = dtClockRestart.asMilliseconds();
-        float dt_s = dtClockRestart.asSeconds();
+            /* ----- Get DeltaTime -----*/
+            sf::Time dtClockRestart = deltaTimeClock.restart();
+            int32_t dt_ms = dtClockRestart.asMilliseconds();
+            float dt_s = dtClockRestart.asSeconds();
 
-        /* ----- Update Player ----- */
-        player.update(dt_ms);
+            /* ----- Update Player ----- */
+            player.update(dt_ms);
 
-        /* ----- Update World Background (Parallax and Tiling) ----- */
-        float playerMovement = player.getMomentum().x * dt_s;
-        WorldBackground.scroll(-playerMovement * 1.f);
+            /* ----- Update World Background (Parallax and Tiling) ----- */
+            float playerMovement = player.getMomentum().x * dt_s;
+            WorldBackground.scroll(-playerMovement * 1.f);
 
-        /* ----- Collect coins ----- */
-        for (int i = 0; i < coins.size(); i++) {
-            if (player.getGlobalBounds().findIntersection((coins[i])->getSprite().getGlobalBounds())) {
-                if (coinSound.has_value()) {
-                    coinSound->play();
+            /* ----- Collect coins ----- */
+            for (int i = 0; i < coins.size(); i++) {
+                if (player.getGlobalBounds().findIntersection((coins[i])->getSprite().getGlobalBounds())) {
+                    if (coinSound.has_value()) {
+                        coinSound->play();
+                    }
+                    player.incrementCoins();
+                    coins.erase(coins.begin() + i);
+                    i--; // Adjust index after removal of the vector
+
+
+                    // formatted the counter to keep the 0
+                    std::stringstream ss;
+                    ss << std::setw(2) << std::setfill('0') << player.getNumCoins();
+                    coinCounterText.setString(ss.str());
+
+
+
+                    break; // Exit after collecting one coin per frame
                 }
-                player.incrementCoins();
-                coins.erase(coins.begin() + i);
-                i--; // Adjust index after removal of the vector
-
-
-                // formatted the counter to keep the 0
-                std::stringstream ss;
-                ss << std::setw(2) << std::setfill('0') << player.getNumCoins();
-                coinCounterText.setString(ss.str());
-
-
-
-                break; // Exit after collecting one coin per frame
             }
-        }
 
-        /* ----- Handle Collisions ----- */
-        std::vector<sf::FloatRect> collisionBoxes;
-        //collisionBoxes.push_back(shape2.getGlobalBounds());
-        //collisionBoxes.push_back(shape3.getGlobalBounds());
+            /* ----- Handle Collisions ----- */
+            std::vector<sf::FloatRect> collisionBoxes;
+            //collisionBoxes.push_back(shape2.getGlobalBounds());
+            //collisionBoxes.push_back(shape3.getGlobalBounds());
 
-        player.collide(collisionBoxes);
+            player.collide(collisionBoxes);
 
-        // These should prob be merged?
-        player.collideObstacles(spikes);
-        player.collidePlatorms(platforms);
+            // These should prob be merged?
+            player.collideObstacles(spikes);
+            player.collidePlatorms(platforms);
 
-        /* ----- Update Camera, Coin Icon, & Coin Text ----- */
-        viewCam.update();
-        window.setView(viewCam);
+            /* ----- Update Camera, Coin Icon, & Coin Text ----- */
+            viewCam.update();
+            window.setView(viewCam);
 
-        coinCounterText.setPosition(viewCam.getCoinCounterPos());
-        coinIcon.setPosition(viewCam.getCoinSpritePos());
+            coinCounterText.setPosition(viewCam.getCoinCounterPos());
+            coinIcon.setPosition(viewCam.getCoinSpritePos());
 
-        /* ----- Window Re-drawing ----- */
-        window.clear();
-        WorldBackground.draw(window);
-        for (auto obj : worldObjects) {
-            sf::Drawable* d_obj = dynamic_cast<sf::Drawable*>(obj);
-            if (d_obj != nullptr) {
-                window.draw(*d_obj);
+            /* ----- Window Re-drawing ----- */
+            window.clear();
+            WorldBackground.draw(window);
+            for (auto obj : worldObjects) {
+                sf::Drawable* d_obj = dynamic_cast<sf::Drawable*>(obj);
+                if (d_obj != nullptr) {
+                    window.draw(*d_obj);
+                }
             }
-        }
-        window.draw(player);
-        //window.draw(shape2);
-        //window.draw(shape3);
-        for (auto& coin : coins) {
-            window.draw(coin->getSprite());
-        }
-        window.draw(coinCounterText);
-        //window.draw(spike);
-        //window.draw(obs1);
-        //window.draw(plat1);
-        window.draw(coinIcon);
-        //window.draw(trasnejdks);
+            window.draw(player);
+            //window.draw(shape2);
+            //window.draw(shape3);
+            for (auto& coin : coins) {
+                window.draw(coin->getSprite());
+            }
+            window.draw(coinCounterText);
+            //window.draw(spike);
+            //window.draw(obs1);
+            //window.draw(plat1);
+            window.draw(coinIcon);
+            //window.draw(trasnejdks);
         }
 
 
