@@ -118,14 +118,16 @@ void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
 	}
 }
 
-void PlayerBall::collidePlatorms(std::vector<sf::Shape*> platforms) {
+void PlayerBall::collidePlatorms(std::vector<Platform*> platforms) {
 	for (int i = 0; i < platforms.size(); i++) {
-		sf::Shape*& obst = platforms[i];
-		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
-		if (intersectingPoints.size() > 0) {
-			// This should be moved to onCollide?
-			sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
-			_momentum = _momentum.projectedOnto(force.perpendicular());
+		sf::Shape* obst = dynamic_cast<sf::Shape*>(platforms[i]);
+		if (obst != nullptr) {
+			std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
+			if (intersectingPoints.size() > 0) {
+				// This should be moved to onCollide?
+				sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
+				_momentum = _momentum.projectedOnto(force.perpendicular());
+			}
 		}
 	}
 }
