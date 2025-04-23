@@ -39,15 +39,25 @@ void Camera::setCoinCounterOffset(sf::Vector2f newOffset) {
 /* ----- Getters ----- */
 
 sf::Vector2f Camera::getTargetPos() {
+	sf::Vector2f target;
+
 	switch (targetType) {
 	case PLAYER:
-		if (playerTarget != nullptr) return playerTarget->getPosition();
-		return staticTarget;
+		if (playerTarget != nullptr) {
+			// Only take the X position from player, keep existing Y
+			target.x = playerTarget->getPosition().x;
+			target.y = getCenter().y; // Keep current vertical position
+		}
+		else {
+			target = staticTarget;
+		}
+		break;
 	case STATIC:
-		return staticTarget;
+		target = staticTarget;
+		break;
 	}
 
-	return sf::Vector2f();
+	return target;
 }
 sf::Vector2f Camera::getCoinSpritePos() {
 	return sf::Vector2f(

@@ -51,7 +51,6 @@ int main()
     std::vector<Coin> coins;
     coins.emplace_back(coinTexture, sf::Vector2f(window.getSize().x - 2100.f, window.getSize().y - 1500.f));
     coins.emplace_back(coinTexture, sf::Vector2f(800.f, 600.f));
-    coins.emplace_back(coinTexture, sf::Vector2f(1200.f, 400.f));
     
     sf::SoundBuffer coinBuffer;
     std::optional<sf::Sound> coinSound;
