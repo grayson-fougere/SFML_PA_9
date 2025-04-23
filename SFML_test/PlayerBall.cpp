@@ -21,7 +21,7 @@ void PlayerBall::setNumCoins(int newNumCoins) { numCoins = newNumCoins; }
 void PlayerBall::incrementCoins() { numCoins++; }
 void PlayerBall::setJumpSound(const sf::SoundBuffer& buffer) {
 	jumpSound.emplace(buffer);
-	jumpSound->setVolume(30.f);  
+	jumpSound->setVolume(20.f);  
 }
 sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
 int PlayerBall::getNumCoins() { return numCoins; }
@@ -102,9 +102,9 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 	}
 }
 
-void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
+void PlayerBall::collideObstacles(std::vector<Spike*> obstacles) {
 	for (int i = 0; i < obstacles.size(); i++) {
-		sf::Shape* &obst = obstacles[i];
+		sf::Shape* obst = dynamic_cast<sf::Shape*>(obstacles[i]);
 		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });
@@ -118,14 +118,16 @@ void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
 	}
 }
 
-void PlayerBall::collidePlatorms(std::vector<sf::Shape*> platforms) {
+void PlayerBall::collidePlatorms(std::vector<Platform*> platforms) {
 	for (int i = 0; i < platforms.size(); i++) {
-		sf::Shape*& obst = platforms[i];
-		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
-		if (intersectingPoints.size() > 0) {
-			// This should be moved to onCollide?
-			sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
-			_momentum = _momentum.projectedOnto(force.perpendicular());
+		sf::Shape* obst = dynamic_cast<sf::Shape*>(platforms[i]);
+		if (obst != nullptr) {
+			std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
+			if (intersectingPoints.size() > 0) {
+				// This should be moved to onCollide?
+				sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
+				_momentum = _momentum.projectedOnto(force.perpendicular());
+			}
 		}
 	}
 }
