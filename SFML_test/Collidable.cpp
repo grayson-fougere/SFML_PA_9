@@ -12,10 +12,10 @@ float Collidable::distanceBetween(const sf::Vector2f& a, const sf::Vector2f& b)
 
 bool Collidable::isInRange(const float& n, const float& bound1, const float& bound2) {
     if (bound2 >= bound1) {
-        return n >= bound1 && n <= bound2;
+        return n >= bound1-1.f && n <= bound2+1;
     }
     else {
-        return n <= bound1 && n >= bound2;
+        return n <= bound1+1.f && n >= bound2-1.f;
     }
 }
 
@@ -66,18 +66,23 @@ std::vector<sf::Vector2f> Collidable::findAllIntersections(sf::Shape& a, sf::Sha
 
 
 
-sf::Vector2f Collidable::applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape)
+sf::Vector2f Collidable::applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape, sf::Shape* collidingShape)
 {
     if (intersections.size() >= 2) {
         const sf::Vector2f& p1 = intersections[0], & p2 = intersections[1], diff = p2 - p1, mid = p1 + (diff * 0.5f), norm = diff.perpendicular(),
-            shapeCenter = moveShape->getTransform().transformPoint(moveShape->getGeometricCenter());
+            shapeCenter = moveShape->getTransform().transformPoint(moveShape->getGeometricCenter()), colShapeCenter= collidingShape->getTransform().transformPoint(collidingShape->getGeometricCenter());
         //float moveSize = (mid - moveShape->getTransform().transformPoint(moveShape->getGeometricCenter())).length();
         //float moveMagnitude = 15;
         float moveMagnitude = distanceBetween(p1, shapeCenter) - distanceBetween(mid, shapeCenter);
+        if (distanceBetween(mid, colShapeCenter) > distanceBetween(shapeCenter, colShapeCenter)) {
+            moveMagnitude += distanceBetween(p1, shapeCenter);
+        }
+
         if (distanceBetween(mid + norm.normalized() * moveMagnitude, shapeCenter) > 
             distanceBetween(mid + norm.normalized() * -moveMagnitude, shapeCenter)) {
             moveMagnitude *= -1;
         }
+
         moveShape->move(norm.normalized()*moveMagnitude);
         return norm.normalized() * moveMagnitude;
     }

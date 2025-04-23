@@ -105,7 +105,7 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 void PlayerBall::collideObjects(std::vector<sf::Shape*> objects) {
 	for (int i = 0; i < objects.size(); i++) {
 		sf::Shape* &obst = objects[i]; 
-		std::vector<sf::Vector2f> intersectingPoints =  findAllIntersections(*this, *obst);
+		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });
 			// Obstactles kill, not push
@@ -169,8 +169,8 @@ void PlayerBall::onCollide(Collidable* obj, std::vector<sf::Vector2f> points)
 	std::cout << obj->getTag() << std::endl;
 	//_momentum*=0.f;
 	if (obj->getTag() == "Floor") {
-		sf::Vector2f force = applyCollisionForces(points, this);
-		_momentum = _momentum.projectedOnto(force.perpendicular());
+		sf::Vector2f force = applyCollisionForces(points, this, dynamic_cast<sf::Shape*>(obj) );
+		_momentum = _momentum.projectedOnto(force.perpendicular().normalized());
 
 	}
 	hasJumped = false;

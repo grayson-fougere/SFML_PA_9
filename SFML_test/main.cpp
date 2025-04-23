@@ -116,7 +116,7 @@ int main()
     trianslkgb.setPosition({ 800, 700 });
 
     Spike spike({ 1000, 800 }, 10);
-    Platform plat1(sf::Vector2f(3000.f, 1000.f), 1000, 1000, sf::Color::Magenta);
+    Platform plat1(sf::Vector2f(2000.f, 1000.f), 5000, 1000, sf::Color::Magenta);
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;
