@@ -1,10 +1,10 @@
 #include "Background.hpp"
 #include <iostream>
 
-// updated constructor: pass texture by reference
+
 Background::Layer::Layer(sf::Texture& tex, float speed)
     : texture(tex), sprite(tex), scrollSpeed(speed) {
-    // sprite is safely initialized with a valid reference
+    
 }
 
 Background::Background() {
@@ -20,7 +20,7 @@ Background::Background() {
             std::cerr << "Failed to load near layer texture\n";
         }
 
-        // construct layers with valid texture references (no move)
+        // construct layers
         layers.emplace_back(farTex, 0.2f);
         layers.emplace_back(midTex, 0.5f);
         layers.emplace_back(nearTex, 0.8f);
