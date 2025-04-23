@@ -167,9 +167,60 @@ int main()
 
     //platforms.push_back(&plat1);
 
+    
+    bool mainMenuOpen = true;
+    int optionSelected = 0;
+    sf::Text gameTitle(font, "Red Ball", 70);
+    sf::Text playButton(font, "Play", 48);
+    sf::Text creditsButton(font, "Credits", 48);
+    sf::Text exitButton(font, "Exit", 48);
+
+    //changes origin of text boxes to center so when changing position it is in the center of the screen
+    gameTitle.setOrigin({ gameTitle.getGlobalBounds().getCenter().x, gameTitle.getGlobalBounds().getCenter().y });
+    playButton.setOrigin({ playButton.getGlobalBounds().getCenter().x, playButton.getGlobalBounds().getCenter().y });
+    creditsButton.setOrigin({ creditsButton.getGlobalBounds().getCenter().x, creditsButton.getGlobalBounds().getCenter().y });
+    exitButton.setOrigin({ exitButton.getGlobalBounds().getCenter().x, exitButton.getGlobalBounds().getCenter().y });
+
+
+    //sets position of the text boxes
+    gameTitle.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 200});
+    playButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 75});
+    creditsButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f});
+    exitButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 75 });
+    
     /* ----- Main Loop ----- */
     while (window.isOpen())
     {
+        
+        
+        if (mainMenuOpen == true) {
+            window.draw(gameTitle);
+            window.draw(playButton);
+            window.draw(creditsButton);
+            window.draw(exitButton);
+
+            if (playButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
+                playButton.setFillColor(sf::Color::Red);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    mainMenuOpen = false;
+                    optionSelected = 1;
+                }
+            }
+            else { playButton.setFillColor(sf::Color::White); }
+            if (exitButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
+                exitButton.setFillColor(sf::Color::Red);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    window.close();
+                }
+            }
+            else { exitButton.setFillColor(sf::Color::White); }
+        }
+
+
+
+
+
+
         // check for quit button (esc)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
@@ -182,6 +233,7 @@ int main()
                 window.close();
         }
 
+        if (optionSelected == 1) {
         /* ----- Get DeltaTime -----*/
         sf::Time dtClockRestart = deltaTimeClock.restart();
         int32_t dt_ms = dtClockRestart.asMilliseconds();
@@ -210,7 +262,7 @@ int main()
                 ss << std::setw(2) << std::setfill('0') << player.getNumCoins();
                 coinCounterText.setString(ss.str());
 
-                
+
 
                 break; // Exit after collecting one coin per frame
             }
@@ -255,6 +307,9 @@ int main()
         //window.draw(plat1);
         window.draw(coinIcon);
         //window.draw(trasnejdks);
+        }
+
+
         window.display();
     }
 }
