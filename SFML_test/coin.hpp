@@ -3,13 +3,12 @@
 
 class Coin {
 public:
-	Coin(const sf::Texture& texture, float x, float y);
+    // Constructor now MUST receive texture at creation
+    Coin(const sf::Texture& texture, const sf::Vector2f& position);
 
-    // draw the coin to the window
-    void draw(sf::RenderWindow& window);
-
-    // get a reference to the internal sprite (e.g., for positioning)
+    void draw(sf::RenderWindow& window) const;
     const sf::Sprite& getSprite() const;
+
 private:
-	sf::Sprite sprite;
+    sf::Sprite sprite;  // No default construction allowed
 };
