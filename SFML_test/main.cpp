@@ -37,9 +37,8 @@ int main()
     viewCam.followPlayer();
 
     /* ----- Coin Icon ----- */
-    sf::Texture coinTexture;
-    sf::Sprite coinIcon(coinTexture);
     sf::Image coinImage;
+    sf::Texture coinTexture;
 
     // Load image
     if (!coinImage.loadFromFile("Textures/coinpicture.png")) {
@@ -51,6 +50,7 @@ int main()
         return -1; // Error handling
     }
 
+    sf::Sprite coinIcon(coinTexture);
     coinIcon.setScale(sf::Vector2f(0.2f, 0.2f)); // Smaller than the main coins
 
     /* ----- Coin Counter Text ----- */
