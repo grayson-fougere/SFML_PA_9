@@ -80,5 +80,8 @@
     <Text Include="Level1.txt">
       <Filter>Levels</Filter>
     </Text>
+    <Text Include="LevelSelect.txt">
+      <Filter>Levels</Filter>
+    </Text>
   </ItemGroup>
 </Project>
