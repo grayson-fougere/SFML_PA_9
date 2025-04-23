@@ -28,6 +28,7 @@ public:
 	void update(int32_t dt);
 	void collide(std::vector<sf::FloatRect> collisionsToCheck);
 	void collideObstacles(std::vector<sf::Shape*> obstacles);
+	void collidePlatorms(std::vector<sf::Shape*> platforms);
 	void collideTop(sf::RectangleShape floor);
 	void collideView(sf::Vector2u windowSize);
 
