@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Level1.txt" />
+    <Text Include="LevelSelect.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
