@@ -1,12 +1,23 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
+#include <vector>
+#include <memory>
 class Background {
 public:
-    Background();                      // constructor
-    void draw(sf::RenderWindow& win); // draw function
+    Background();
+    void draw(sf::RenderWindow& window);
     void resize(sf::Vector2u windowSize);
+    void scroll(float offset);
+
+    sf::Texture farTex, midTex, nearTex;
+
 private:
-    sf::Texture texture;
-    sf::Sprite* sprite_ptr; // make for pointer to avoid trying to construct a sprite from a texture we don't have yet
+    struct Layer {
+        Layer(sf::Texture& tex, float speed);
+        sf::Texture& texture;
+        sf::Sprite sprite;
+        float scrollSpeed;
+    };
+
+    std::vector<Layer> layers;
 };

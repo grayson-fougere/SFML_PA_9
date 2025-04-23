@@ -6,9 +6,9 @@ PlayerBall::PlayerBall() : PlayerBall(0, 0, 0, 0, { 0, 0 }) {}
 PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, {0, 0}) {}
 
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
-		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), sf::CircleShape(radius), Collidable("Player") {
+		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), numCoins(0), sf::CircleShape(radius), Collidable("Player") {
 
-	_ballTexture = sf::Texture(sf::Image("Resources/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
+	_ballTexture = sf::Texture(sf::Image("Textures/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
 
 	setTexture(&_ballTexture);
 }
@@ -17,6 +17,11 @@ void PlayerBall::setAccel(float newAccel) { _accel = newAccel; }
 void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; }
 void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
 void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
+void PlayerBall::setNumCoins(int newNumCoins) { numCoins = newNumCoins; }
+void PlayerBall::incrementCoins() { numCoins++; }
+
+sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
+int PlayerBall::getNumCoins() { return numCoins; }
 
 void PlayerBall::update(int32_t dt) {
 	// update momentum - step 0 [input]
@@ -89,9 +94,10 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 	}
 }
 
-void PlayerBall::collideObstacles(std::vector<sf::ConvexShape> obstacles) {
-	for (auto obst : obstacles) {
-		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, obst);
+void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
+	for (int i = 0; i < obstacles.size(); i++) {
+		sf::Shape* &obst = obstacles[i];
+		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });
 			applyCollisionForces(intersectingPoints, this);
@@ -150,6 +156,15 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 	_momentum = { newXMom, newYMom };
 }
 
-void PlayerBall::onCollide(Collidable& obj)
+void PlayerBall::onCollide(Collidable* obj)
 {
+	std::cout << obj->getTag() << std::endl;
+	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
+		kill();
+	}
+}
+
+void PlayerBall::kill()
+{
+	std::cout << "I AM DEAD!!!" << sf::Vector2f().normalized() << std::endl;
 }

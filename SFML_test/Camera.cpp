@@ -1,36 +1,42 @@
 #include "Camera.hpp"
 
+/* ----- Constructors ----- */
+
 Camera::Camera() : staticTarget(), playerTarget(), sf::View() {
-	setStaticTarget(getCenter());
+	updateStaticPos(sf::Vector2f());
+	followStatic();
 }
-Camera::Camera(sf::RenderWindow &window) : staticTarget(), playerTarget(), sf::View(sf::FloatRect({ 0.f, 0.f }, sf::Vector2f( window.getSize().x, window.getSize().y ))) {
-	setStaticTarget(getCenter());
+Camera::Camera(sf::RenderWindow& window) : staticTarget(), playerTarget(), sf::View() {
+	updateWindow(window);
 }
-Camera::Camera(float width, float height, float x, float y) : staticTarget(), playerTarget(), sf::View(sf::FloatRect({ 0, 0 }, { width, height })) {
-	setCenter({ x,y });
-	setStaticTarget(getCenter());
-}
-Camera::Camera(sf::FloatRect windowRect) : staticTarget(), playerTarget(), sf::View(windowRect) {
-	setStaticTarget(getCenter());
-}
-
-void Camera::changeDimensions(float width, float height) {
-	setSize({ width, height });
-	setCenter(getTargetPos());
-}
-void Camera::changeDimensions(sf::Vector2f dims) {
-	setSize(dims);
-	setCenter(getTargetPos());
+Camera::Camera(sf::RenderWindow& window, PlayerBall& playerToFollow) : staticTarget(), playerTarget(), sf::View() {
+	updateWindow(window);
+	updatePlayer(playerToFollow);
+	followPlayer();
 }
 
-void Camera::setDynamicTarget(PlayerBall &player) {
-	playerTarget = &player;
-	targetType = PLAYER;
+/* ----- Setters ----- */
+
+void Camera::updateWindow(sf::RenderWindow& window) {
+	setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 }
-void Camera::setStaticTarget(sf::Vector2f pos) {
-	staticTarget = pos;
-	targetType = STATIC;
+void Camera::updatePlayer(PlayerBall& newPlayerToFollow) {
+	playerTarget = &newPlayerToFollow;
 }
+void Camera::updateStaticCenter(sf::Vector2f newPos) {
+	staticTarget = newPos;
+}
+void Camera::updateStaticPos(sf::Vector2f newPos) {
+	staticTarget = newPos + sf::Vector2f((getSize().x /2), (getSize().y /2));
+}
+void Camera::setCoinSpriteOffset(sf::Vector2f newOffset) {
+	coinSpriteOffset = newOffset;
+}
+void Camera::setCoinCounterOffset(sf::Vector2f newOffset) {
+	coinCounterOffset = newOffset;
+}
+
+/* ----- Getters ----- */
 
 sf::Vector2f Camera::getTargetPos() {
 	switch (targetType) {
@@ -43,6 +49,27 @@ sf::Vector2f Camera::getTargetPos() {
 
 	return sf::Vector2f();
 }
+sf::Vector2f Camera::getCoinSpritePos() {
+	return sf::Vector2f(
+		getCenter().x + (getSize().x / 2) - coinSpriteOffset.x,  // X: get center, move to right side, and subtract offset
+		getCenter().y - (getSize().y /2) + coinSpriteOffset.y);  // Y: get center, move to top, and add offset
+}
+sf::Vector2f Camera::getCoinCounterPos() {
+	return sf::Vector2f(
+		getCenter().x + (getSize().x / 2) - coinCounterOffset.x,   // X: get center, move to right side, and subtract offset
+		getCenter().y - (getSize().y / 2) + coinCounterOffset.y);  // Y: get center, move to top, and add offset
+}
+
+/* ----- Toggles ----- */
+
+void Camera::followPlayer() {
+	targetType = PLAYER;
+}
+void Camera::followStatic() {
+	targetType = STATIC;
+}
+
+/* ----- MainLoop Functions ----- */
 
 void Camera::update() {
 	setCenter(getTargetPos());
