@@ -34,7 +34,6 @@ int main()
     viewCam.setCoinCounterOffset(sf::Vector2f(175, 1.5));
     viewCam.setCoinSpriteOffset(sf::Vector2f(300, 10));
     viewCam.updatePlayer(player);
-    viewCam.followPlayer();
 
     /* ----- Coin Icon ----- */
     sf::Image coinImage;

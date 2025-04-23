@@ -111,4 +111,7 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 			}
 		}
 	}
+
+	// update camera y pos
+	camera.updateYPos(cur_y / 2);
 }
