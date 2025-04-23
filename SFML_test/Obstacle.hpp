@@ -6,7 +6,7 @@ class Obstacle : public sf::RectangleShape, public Collidable {
 public:
 	Obstacle(float width, float height);
 	Obstacle(sf::Vector2f size = { 0.0, 0.0 }, sf::Vector2f position = { 0.0, 0.0 });
-	void onCollide(Collidable* obj) override;
+	void onCollide(Collidable* obj, std::vector<sf::Vector2f> points) override;
 private:
 	sf::Texture obstTexture;
 };

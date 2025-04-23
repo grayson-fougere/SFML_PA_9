@@ -25,7 +25,6 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugCircle.hpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Spike.cpp" />
   </ItemGroup>
@@ -43,7 +42,6 @@
     <ClInclude Include="Spike.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

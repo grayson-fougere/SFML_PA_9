@@ -115,19 +115,17 @@ int main()
     trianslkgb.setScale({ 5.f, 5.f });
     trianslkgb.setPosition({ 800, 700 });
 
-    Spike spike({ 1000, 1000 }, 10);
+    Spike spike({ 1000, 800 }, 10);
     Platform plat1(sf::Vector2f(3000.f, 1000.f), 1000, 1000, sf::Color::Magenta);
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;
+    std::vector<sf::Shape*> collisionStuffs;
 
-    std::vector<sf::Shape*> obstacles;
-    std::vector<sf::Shape*> platforms;
-    obstacles.push_back(&trasnejdks);
-    obstacles.push_back(&obs1);
-    obstacles.push_back(&spike);
-
-    platforms.push_back(&plat1);
+    collisionStuffs.push_back(&trasnejdks);
+    collisionStuffs.push_back(&obs1);
+    collisionStuffs.push_back(&spike);
+    collisionStuffs.push_back(&plat1);
 
     viewCam.updatePlayer(player);
     viewCam.followPlayer();
@@ -182,8 +180,7 @@ int main()
         //obstacles.push_back(trianslkgb);
 
         // These should prob be merged?
-        player.collideObstacles(obstacles);
-        player.collidePlatorms(platforms);
+        player.collideObjects(collisionStuffs);
 
         //player.collideTop(shape2);
         /*player.collideView(window.getSize());*/
