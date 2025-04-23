@@ -76,7 +76,39 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 		}
 		else {
 			std::cout << "loaded load: " << line << std::endl;
+
+			// if finish load
+			if (line[0] == 'f') {
+				// Following code from ChatGPT to extract the filename inside the quotes
+
+				// Find the position of the first quote
+				size_t start = line.find('"') + 1;
+				// Find the position of the second quote
+				size_t end = line.find('"', start);
+
+				if (start != std::string::npos && end != std::string::npos) {
+					finishLoad = line.substr(start, end - start);
+				}
+
+				continue;
+			}
+
+			// if other load point
+			if (line[0] == 'z') {
+				// Following code from ChatGPT to extract the filename inside the quotes
+
+				// Find the position of the first quote
+				size_t start = line.find('"') + 1;
+				// Find the position of the second quote
+				size_t end = line.find('"', start);
+
+				if (start != std::string::npos && end != std::string::npos) {
+					std::string nextLoad = line.substr(start, end - start);
+					otherLoads.push_back(nextLoad);
+				}
+
+				continue;
+			}
 		}
 	}
 }
-

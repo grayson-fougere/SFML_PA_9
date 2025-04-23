@@ -106,7 +106,6 @@ int main()
     std::vector<Platform*> platforms;
     for (auto obj : worldObjects) {
         Platform* platform_ptr = dynamic_cast<Platform*>(obj);
-        std::cout << (platform_ptr == nullptr) << std::endl;
         if (platform_ptr != nullptr) {
             platforms.push_back(platform_ptr);
         }
@@ -232,7 +231,6 @@ int main()
         WorldBackground.draw(window);
         for (auto obj : worldObjects) {
             sf::Drawable* d_obj = dynamic_cast<sf::Drawable*>(obj);
-            std::cout << (d_obj == nullptr) << std::endl;
             if (d_obj != nullptr) {
                 window.draw(*d_obj);
             }
