@@ -8,63 +8,81 @@
 #include "Camera.hpp"
 #include "Spike.hpp"
 #include "Obstacle.hpp"
+#include "WorldLoader.hpp"
 #include "Platform.hpp"
-
 #include <optional>
 #include <SFML/Audio.hpp>
+
 int main()
 {
-    //sf::Window App
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
+    /* ----- Main Window ----- */
+    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);  // sf window to draw to
 
-    // opens a font
+    /* ---- Fonts ----- */
     sf::Font font("Resources/freedom-font.ttf");
 
+    /* ----- Background ----- */
+    Background WorldBackground;
+    WorldBackground.resize(window.getSize());
+
+    /* ----- Player ----- */
+    PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, { 10.f, 10.f });
+
+    /* ----- Camera ----- */
+    Camera viewCam(window);
+
+    viewCam.setCoinCounterOffset(sf::Vector2f(175, 1.5));
+    viewCam.setCoinSpriteOffset(sf::Vector2f(300, 10));
+    viewCam.updatePlayer(player);
+
+    /* ----- Coin Icon ----- */
     sf::Image coinImage;
+    sf::Texture coinTexture;
+
+    // Load image
     if (!coinImage.loadFromFile("Textures/coinpicture.png")) {
         return -1; // Error handling
     }
 
-    sf::Texture coinTexture;
+    // Load texture from image
     if (!coinTexture.loadFromImage(coinImage)) {
         return -1; // Error handling
     }
-    
 
+    sf::Sprite coinIcon(coinTexture);
+    coinIcon.setScale(sf::Vector2f(0.2f, 0.2f)); // Smaller than the main coins
 
-    Camera viewCam(window);
+    /* ----- Coin Counter Text ----- */
+    sf::Text coinCounterText(font);
 
-    Background WorldBackground;
-    WorldBackground.resize(window.getSize());
-    PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, {10.f, 10.f});
+    coinCounterText.setFont(font);
+    coinCounterText.setString("00");
+    coinCounterText.setCharacterSize(100);
+    coinCounterText.setFillColor(sf::Color::White);
 
+    /* ----- Sounds ----- */
     sf::Music backgroundMusic;
+    sf::SoundBuffer coinBuffer;
+    std::optional<sf::Sound> coinSound;
+    sf::SoundBuffer jumpBuffer;
 
+    // background music
     if (!backgroundMusic.openFromFile("Resources/Gamesong.mp3")) { // All rights go to ConcernedApe and Chucklefish (Music from Stardew Valley)
         std::cerr << "Failed to load background music!\n";
     }
     else {
         backgroundMusic.setLooping(true);       // Loop indefinitely
-        backgroundMusic.setVolume(80.f);    
+        backgroundMusic.setVolume(80.f);
         backgroundMusic.play();              // Start song
     }
-    bool coinActive = true;
 
-    // Initialize coins
-    std::vector<Coin> coins;
-    coins.emplace_back(coinTexture, sf::Vector2f(window.getSize().x - 2100.f, window.getSize().y - 1500.f));
-    coins.emplace_back(coinTexture, sf::Vector2f(800.f, 600.f));
-    coins.emplace_back(coinTexture, sf::Vector2f(1200.f, 400.f));
-    
-    sf::SoundBuffer coinBuffer;
-    std::optional<sf::Sound> coinSound;
-
+    // coins
     if (coinBuffer.loadFromFile("Resources/coin.wav")) {
-        coinSound.emplace(coinBuffer);  
+        coinSound.emplace(coinBuffer);
         coinSound->setVolume(25);
     }
 
-    sf::SoundBuffer jumpBuffer;
+    // jumps
     if (jumpBuffer.loadFromFile("Resources/jump.wav")) {
         player.setJumpSound(jumpBuffer);  // Pass to player
     }
@@ -72,87 +90,114 @@ int main()
         std::cout << "Couldn't load jump sound\n";
     }
 
-    // font placement logic
-    sf::Text coinCounterText(font);
-    coinCounterText.setFont(font);
-    coinCounterText.setString("00");
-    coinCounterText.setCharacterSize(100);
-    coinCounterText.setFillColor(sf::Color::White);
-    viewCam.setCoinCounterOffset(sf::Vector2f(175, 1.5));
-   
-
-    // Mini coin sprite next to the counter
-    sf::Sprite coinIcon(coinTexture);
-    coinIcon.setScale(sf::Vector2f(0.2f, 0.2f)); // Smaller than the main coins
-    
-    viewCam.setCoinSpriteOffset(sf::Vector2f(300, 10));
-    
-    sf::RectangleShape shape2({ 1600.f, 100.f });
-    sf::RectangleShape colsqr({ 0.f, 0.f });
-
-
-    Obstacle obs1({100, 100}, {300, 1000});
-    //sf::RectangleShape colsqr({ 100.f, 100.f });
-    sf::ConvexShape trasnejdks(3);
-    trasnejdks.setPoint(0, { 0.f, 0.f });
-    trasnejdks.setPoint(1, { 100.f, 0.f });
-    trasnejdks.setPoint(2, { 0.f, -100.f });
-    trasnejdks.setFillColor(sf::Color::Red);
-    trasnejdks.setScale({ 2.5f, 2.5f });
-    trasnejdks.setPosition({ 0, 1800 });
-
-    shape2.setFillColor(sf::Color::Blue);
-    shape2.setPosition({ 0.f, 800.f });
-    sf::RectangleShape shape3({ 50.f, 500.f });
-    shape3.setFillColor(sf::Color::Green);
-    shape3.setPosition({ 1200.f, 0.f });
-
-    sf::ConvexShape trianslkgb(3);
-    trianslkgb.setPoint(0, { 0, 50 });
-    trianslkgb.setPoint(1, { 50, 50 });
-    trianslkgb.setPoint(2, { 25, 0 });
-    trianslkgb.setFillColor(sf::Color::Green);
-    trianslkgb.setScale({ 5.f, 5.f });
-    trianslkgb.setPosition({ 800, 700 });
-
-    Spike spike({ 1000, 800 }, 10);
-    Platform plat1(sf::Vector2f(2000.f, 1000.f), 5000, 1000, sf::Color::Magenta);
-    window.setFramerateLimit(60); // sets max frame rate to 60fps
-
+    /* ----- DeltaTime Clock ----- */
     sf::Clock deltaTimeClock;
     std::vector<sf::Shape*> collisionStuffs;
 
-    collisionStuffs.push_back(&trasnejdks);
-    collisionStuffs.push_back(&obs1);
-    collisionStuffs.push_back(&spike);
-    collisionStuffs.push_back(&plat1);
+    /* ----- World Objects ----- */
+    std::vector<Coin*> coins;
+    std::vector<Collidable*> worldObjects;
+    std::string finishLoad;
+    std::vector<std::string> otherLoads;
 
-    viewCam.updatePlayer(player);
-    viewCam.followPlayer();
+    /* ----- NEW WORLD LOADING ----- */
+    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
+
+    std::vector<Platform*> platforms;
+    for (auto obj : worldObjects) {
+        Platform* platform_ptr = dynamic_cast<Platform*>(obj);
+        if (platform_ptr != nullptr) {
+            platforms.push_back(platform_ptr);
+        }
+    }
+
+    std::vector <Spike*> spikes;
+    for (auto obj : worldObjects) {
+        Spike* spike_ptr = dynamic_cast<Spike*>(obj);
+        if (spike_ptr != nullptr) {
+            spikes.push_back(spike_ptr);
+        }
+    }
+
+
+    /* ----- OLD WORLD STUFF ----- */
+
+    //bool coinActive = true;
+
+    //// Initialize coins
+    //coins.emplace_back(coinTexture, sf::Vector2f(window.getSize().x - 2100.f, window.getSize().y - 1500.f));
+    //coins.emplace_back(coinTexture, sf::Vector2f(800.f, 600.f));
+    //coins.emplace_back(coinTexture, sf::Vector2f(1200.f, 400.f));
+    //
+    //sf::RectangleShape shape2({ 1600.f, 100.f });
+    //sf::RectangleShape colsqr({ 0.f, 0.f });
+
+    //Obstacle obs1({100, 100}, {300, 1000});
+    ////sf::RectangleShape colsqr({ 100.f, 100.f });
+    //sf::ConvexShape trasnejdks(3);
+    //trasnejdks.setPoint(0, { 0.f, 0.f });
+    //trasnejdks.setPoint(1, { 100.f, 0.f });
+    //trasnejdks.setPoint(2, { 0.f, -100.f });
+    //trasnejdks.setFillColor(sf::Color::Red);
+    //trasnejdks.setScale({ 2.5f, 2.5f });
+    //trasnejdks.setPosition({ 0, 1800 });
+
+    //shape2.setFillColor(sf::Color::Blue);
+    //shape2.setPosition({ 0.f, 800.f });
+    //sf::RectangleShape shape3({ 50.f, 500.f });
+    //shape3.setFillColor(sf::Color::Green);
+    //shape3.setPosition({ 1200.f, 0.f });
+
+    //sf::ConvexShape trianslkgb(3);
+    //trianslkgb.setPoint(0, { 0, 50 });
+    //trianslkgb.setPoint(1, { 50, 50 });
+    //trianslkgb.setPoint(2, { 25, 0 });
+    //trianslkgb.setFillColor(sf::Color::Green);
+    //trianslkgb.setScale({ 5.f, 5.f });
+    //trianslkgb.setPosition({ 800, 700 });
+
+    //Spike spike({ 1000, 1000 }, 10);
+    //Platform plat1(sf::Vector2f(3000.f, 1000.f), 1000, 1000, sf::Color::Magenta);
+    //window.setFramerateLimit(60); // sets max frame rate to 60fps
+
+    //std::vector<sf::Shape*> obstacles;
+    //std::vector<sf::Shape*> platforms;
+    //obstacles.push_back(&trasnejdks);
+    //obstacles.push_back(&obs1);
+    //obstacles.push_back(&spike);
+
+    //platforms.push_back(&plat1);
+
+    /* ----- Main Loop ----- */
     while (window.isOpen())
     {
+        // check for quit button (esc)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
             window.close();
         }
 
+        // check for close button press [X]
         while (const std::optional event = window.pollEvent())
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
 
-        sf::Time dtClockRestart = deltaTimeClock.restart();  // single time var based on one point
-        int32_t dt = dtClockRestart.asMilliseconds();
-        player.update(dt);
+        /* ----- Get DeltaTime -----*/
+        sf::Time dtClockRestart = deltaTimeClock.restart();
+        int32_t dt_ms = dtClockRestart.asMilliseconds();
+        float dt_s = dtClockRestart.asSeconds();
 
-        float deltaTime = dtClockRestart.asSeconds();  // this replaces the previous reset, instead converts time variable
-        float playerMovement = player.getMomentum().x * deltaTime;
+        /* ----- Update Player ----- */
+        player.update(dt_ms);
+
+        /* ----- Update World Background (Parallax and Tiling) ----- */
+        float playerMovement = player.getMomentum().x * dt_s;
         WorldBackground.scroll(-playerMovement * 1.f);
 
-
-
+        /* ----- Collect coins ----- */
         for (int i = 0; i < coins.size(); i++) {
-            if (player.getGlobalBounds().findIntersection(coins[i].getSprite().getGlobalBounds())) {
+            if (player.getGlobalBounds().findIntersection((coins[i])->getSprite().getGlobalBounds())) {
                 if (coinSound.has_value()) {
                     coinSound->play();
                 }
@@ -171,51 +216,47 @@ int main()
                 break; // Exit after collecting one coin per frame
             }
         }
+
+        /* ----- Handle Collisions ----- */
         std::vector<sf::FloatRect> collisionBoxes;
-        collisionBoxes.push_back(shape2.getGlobalBounds());
-        collisionBoxes.push_back(shape3.getGlobalBounds());
+        //collisionBoxes.push_back(shape2.getGlobalBounds());
+        //collisionBoxes.push_back(shape3.getGlobalBounds());
 
         player.collide(collisionBoxes);
 
-        //obstacles.push_back(trianslkgb);
-
         // These should prob be merged?
-        player.collideObjects(collisionStuffs);
+        player.collideObjects(collisionStuffs); // Shift to the use of this!
+        player.collideObstacles(spikes);
+        player.collidePlatorms(platforms);
 
-        //player.collideTop(shape2);
-        /*player.collideView(window.getSize());*/
-
-        //still need to add drag
-
-        //shape.move(velocity);
-
+        /* ----- Update Camera, Coin Icon, & Coin Text ----- */
         viewCam.update();
         window.setView(viewCam);
 
-        // set coin sprite pos, coin counter pos, and counter text by calling the corresponding functions from Camera and Player
         coinCounterText.setPosition(viewCam.getCoinCounterPos());
         coinIcon.setPosition(viewCam.getCoinSpritePos());
 
+        /* ----- Window Re-drawing ----- */
         window.clear();
         WorldBackground.draw(window);
+        for (auto obj : worldObjects) {
+            sf::Drawable* d_obj = dynamic_cast<sf::Drawable*>(obj);
+            if (d_obj != nullptr) {
+                window.draw(*d_obj);
+            }
+        }
         window.draw(player);
-        window.draw(shape2);
-        window.draw(shape3);
+        //window.draw(shape2);
+        //window.draw(shape3);
         for (auto& coin : coins) {
-            window.draw(coin.getSprite());
+            window.draw(coin->getSprite());
         }
         window.draw(coinCounterText);
-        window.draw(spike);
-        window.draw(obs1);
-        window.draw(plat1);
+        //window.draw(spike);
+        //window.draw(obs1);
+        //window.draw(plat1);
         window.draw(coinIcon);
-        //window.draw(colsqr);
-        //window.draw(trianslkgb);
-        window.draw(trasnejdks);
-        // window.draw(colcirc1);
-        // window.draw(colcirc2);
+        //window.draw(trasnejdks);
         window.display();
     }
 }
-
-

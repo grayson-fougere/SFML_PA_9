@@ -5,6 +5,8 @@
 #include <iostream>
 #include "Collidable.hpp"
 #include "Mathf.hpp"
+#include "Platform.hpp"
+#include "Spike.hpp"
 
 #include <SFML/Audio.hpp>
 class PlayerBall : public sf::CircleShape, public Collidable {
