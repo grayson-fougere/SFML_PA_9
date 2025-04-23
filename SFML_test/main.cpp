@@ -8,6 +8,8 @@
 #include "Camera.hpp"
 #include "Obstacle.hpp"
 #include "WorldLoader.hpp"
+#include <optional>
+#include <SFML/Audio.hpp>
 int main()
 {
     //sf::Window App
@@ -26,13 +28,24 @@ int main()
         return -1; // Error handling
     }
     
+
+
     Camera viewCam(window);
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
     PlayerBall player = PlayerBall(100, 0.25f, 5.f, 0.15f, {10.f, 10.f});
 
+    sf::Music backgroundMusic;
 
+    if (!backgroundMusic.openFromFile("Resources/Gamesong.mp3")) { // All rights go to ConcernedApe and Chucklefish (Music from Stardew Valley)
+        std::cerr << "Failed to load background music!\n";
+    }
+    else {
+        backgroundMusic.setLooping(true);       // Loop indefinitely
+        backgroundMusic.setVolume(80.f);    
+        backgroundMusic.play();              // Start song
+    }
     bool coinActive = true;
 
     // Initialize coins
@@ -40,7 +53,22 @@ int main()
     coins.emplace_back(coinTexture, sf::Vector2f(window.getSize().x - 2100.f, window.getSize().y - 1500.f));
     coins.emplace_back(coinTexture, sf::Vector2f(800.f, 600.f));
     coins.emplace_back(coinTexture, sf::Vector2f(1200.f, 400.f));
-   
+    
+    sf::SoundBuffer coinBuffer;
+    std::optional<sf::Sound> coinSound;
+
+    if (coinBuffer.loadFromFile("Resources/coin.wav")) {
+        coinSound.emplace(coinBuffer);  
+        coinSound->setVolume(25);
+    }
+
+    sf::SoundBuffer jumpBuffer;
+    if (jumpBuffer.loadFromFile("Resources/jump.wav")) {
+        player.setJumpSound(jumpBuffer);  // Pass to player
+    }
+    else {
+        std::cout << "Couldn't load jump sound\n";
+    }
 
     // font placement logic
     sf::Text coinCounterText(font);
@@ -124,14 +152,20 @@ int main()
 
         for (int i = 0; i < coins.size(); i++) {
             if (player.getGlobalBounds().findIntersection(coins[i].getSprite().getGlobalBounds())) {
+                if (coinSound.has_value()) {
+                    coinSound->play();
+                }
                 player.incrementCoins();
                 coins.erase(coins.begin() + i);
                 i--; // Adjust index after removal of the vector
+
 
                 // formatted the counter to keep the 0
                 std::stringstream ss;
                 ss << std::setw(2) << std::setfill('0') << player.getNumCoins();
                 coinCounterText.setString(ss.str());
+
+                
 
                 break; // Exit after collecting one coin per frame
             }

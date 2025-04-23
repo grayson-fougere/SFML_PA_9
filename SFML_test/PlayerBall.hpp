@@ -4,7 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "Collidable.hpp"
-
+#include <SFML/Audio.hpp>
 class PlayerBall : public sf::CircleShape, public Collidable {
 
 public:
@@ -19,7 +19,7 @@ public:
 	void setHasJumped(bool newJumpStatus);
 	void setNumCoins(int newNumCoins);
 	void incrementCoins();
-
+	void setJumpSound(const sf::SoundBuffer& buffer);
 	// getters
 	sf::Vector2f getMomentum();
 	int getNumCoins();
@@ -43,4 +43,5 @@ private:
 	int numCoins;
 	sf::Vector2f _moveSpeedCap;
 	sf::Texture _ballTexture;
+	std::optional<sf::Sound> jumpSound;
 };

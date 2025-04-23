@@ -12,6 +12,7 @@ PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf:
 
 	setTexture(&_ballTexture);
 }
+//audio purposes
 
 void PlayerBall::setAccel(float newAccel) { _accel = newAccel; }
 void PlayerBall::setMoveSpeedCap(sf::Vector2f newCap) { _moveSpeedCap = newCap; }
@@ -19,7 +20,10 @@ void PlayerBall::setGravity(float newGravity) { _gravity = newGravity; }
 void PlayerBall::setHasJumped(bool newJumpStatus) { hasJumped = newJumpStatus; }
 void PlayerBall::setNumCoins(int newNumCoins) { numCoins = newNumCoins; }
 void PlayerBall::incrementCoins() { numCoins++; }
-
+void PlayerBall::setJumpSound(const sf::SoundBuffer& buffer) {
+	jumpSound.emplace(buffer);
+	jumpSound->setVolume(30.f);  
+}
 sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
 int PlayerBall::getNumCoins() { return numCoins; }
 
@@ -33,6 +37,9 @@ void PlayerBall::update(int32_t dt) {
 
 		_momentum.y -= _jump * dt;
 		hasJumped = true;
+		if (jumpSound.has_value()) {
+            jumpSound->play();
+        }
 	}
 
 	// add gravity
