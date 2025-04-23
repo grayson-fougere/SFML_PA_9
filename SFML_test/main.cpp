@@ -7,6 +7,7 @@
 #include <sstream>
 #include "Camera.hpp"
 #include "Obstacle.hpp"
+#include "WorldLoader.hpp"
 int main()
 {
     //sf::Window App
@@ -92,6 +93,11 @@ int main()
     obstacles.push_back(&trasnejdks);
     obstacles.push_back(&obs1);
 
+    // other world stuff
+    std::vector<Collidable> worldObjects;
+    std::string finishLoad;
+    std::vector<std::string> otherLoads;
+
     viewCam.updatePlayer(player);
     viewCam.followPlayer();
     while (window.isOpen())
@@ -172,6 +178,8 @@ int main()
         // window.draw(colcirc2);
         window.display();
     }
+
+    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam);
 }
 
 
