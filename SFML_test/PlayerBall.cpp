@@ -1,5 +1,4 @@
 #include "PlayerBall.hpp"
-#include "CollisionHelper.hpp"
 
 PlayerBall::PlayerBall() : PlayerBall(0, 0, 0, 0, { 0, 0 }) {}
 
@@ -45,6 +44,8 @@ void PlayerBall::update(int32_t dt) {
 	// add gravity
 	_momentum.y += _gravity * dt;
 
+	_momentum.x = Mathf::clamp(_momentum.x, -50, 50);
+	_momentum.y = Mathf::clamp(_momentum.y, -100, 100);
 	// apply movement - step 1 of whiteboard
 	move(_momentum);
 }
@@ -107,12 +108,24 @@ void PlayerBall::collideObstacles(std::vector<sf::Shape*> obstacles) {
 		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });
-			applyCollisionForces(intersectingPoints, this);
-			_momentum = sf::Vector2f();
+			// Obstactles kill, not push
+			//applyCollisionForces(intersectingPoints, this);
 			std::cout << "Intersecting points:" << std::endl;
 			for (auto pt : intersectingPoints) {
 				std::cout << pt << std::endl;
 			}
+		}
+	}
+}
+
+void PlayerBall::collidePlatorms(std::vector<sf::Shape*> platforms) {
+	for (int i = 0; i < platforms.size(); i++) {
+		sf::Shape*& obst = platforms[i];
+		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
+		if (intersectingPoints.size() > 0) {
+			// This should be moved to onCollide?
+			sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
+			_momentum = _momentum.projectedOnto(force.perpendicular());
 		}
 	}
 }
@@ -129,28 +142,27 @@ void PlayerBall::collideTop(sf::RectangleShape floor) {
 }
 
 void PlayerBall::collideView(sf::Vector2u windowSize) {
-	// left of window
 	float newX = getPosition().x,
 		newY = getPosition().y,
 		newXMom = _momentum.x,
 		newYMom = _momentum.y;
 
-	// left of window
-	if (newX < 0) {
-		newX = 0;
-		newXMom = 0;
-	}
-	// right of window
-	if (newX + (getRadius() * 2) > windowSize.x) {
-		newX = windowSize.x - (getRadius() * 2);
-		newXMom = 0;
-	}
+	//// left of window
+	//if (newX < 0) {
+	//	newX = 0;
+	//	newXMom = 0;
+	//}
+	//// right of window
+	//if (newX + (getRadius() * 2) > windowSize.x) {
+	//	newX = windowSize.x - (getRadius() * 2);
+	//	newXMom = 0;
+	//}
 
-	// above window
-	if (newY < 0) {
-		newY = 0;
-		newYMom = 0;
-	}
+	//// above window
+	//if (newY < 0) {
+	//	newY = 0;
+	//	newYMom = 0;
+	//}
 
 	// below window
 	if (newY + (getRadius() * 2) > windowSize.y) {
@@ -166,6 +178,8 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 void PlayerBall::onCollide(Collidable* obj)
 {
 	std::cout << obj->getTag() << std::endl;
+	//_momentum*=0.f;
+	hasJumped = false;
 	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
 		kill();
 	}

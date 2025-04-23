@@ -29,6 +29,9 @@
     <ClCompile Include="coin.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>Base Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp">
@@ -51,6 +54,9 @@
     </ClInclude>
     <ClInclude Include="coin.hpp">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Spike.hpp">
+      <Filter>Base Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
