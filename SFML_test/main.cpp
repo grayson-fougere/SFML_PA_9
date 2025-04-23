@@ -94,13 +94,13 @@ int main()
     sf::Clock deltaTimeClock;
 
     /* ----- World Objects ----- */
-    std::vector<Coin> coins;
+    std::vector<Coin*> coins;
     std::vector<Collidable*> worldObjects;
     std::string finishLoad;
     std::vector<std::string> otherLoads;
 
     /* ----- NEW WORLD LOADING ----- */
-    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam);
+    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
 
     std::vector<Platform*> platforms;
     for (auto obj : worldObjects) {
@@ -187,7 +187,7 @@ int main()
 
         /* ----- Collect coins ----- */
         for (int i = 0; i < coins.size(); i++) {
-            if (player.getGlobalBounds().findIntersection(coins[i].getSprite().getGlobalBounds())) {
+            if (player.getGlobalBounds().findIntersection((coins[i])->getSprite().getGlobalBounds())) {
                 if (coinSound.has_value()) {
                     coinSound->play();
                 }
@@ -238,7 +238,7 @@ int main()
         //window.draw(shape2);
         //window.draw(shape3);
         for (auto& coin : coins) {
-            window.draw(coin.getSprite());
+            window.draw(coin->getSprite());
         }
         window.draw(coinCounterText);
         //window.draw(spike);

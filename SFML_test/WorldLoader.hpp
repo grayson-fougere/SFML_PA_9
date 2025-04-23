@@ -34,11 +34,12 @@ class WorldLoader {
 public:
 	static void loadLevel(std::string levelName,	// what level to load. relative path.
 		std::vector<Collidable*>& worldObjects,		// objects in world that inherit from Collidable
-		std::vector<Coin>& coins,					// coins in world
-		std::string& finishLoad,						// level to load when finish is reached
+		std::vector<Coin*>& coins,					// coins in world
+		std::string& finishLoad,					// level to load when finish is reached
 		std::vector<std::string>& otherLoads,		// levels to load when a load trigger is reached
 		PlayerBall& player,							// player object, so coins can be reset and player position changed
 		sf::RenderWindow& window,					// window object
-		Camera& camera								// camera object, so camera can be adjusted to fit world
+		Camera& camera,								// camera object, so camera can be adjusted to fit world
+		sf::Texture& coinTexture					// coin texture to be assigned to any coins created
 	);
 };

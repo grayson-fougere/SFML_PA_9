@@ -2,12 +2,13 @@
 
 void WorldLoader::loadLevel(std::string levelName,	// what level to load. relative path.
 	std::vector<Collidable*>& worldObjects,		// objects in world that inherit from Collidable
-	std::vector<Coin>& coins,					// coins in world
-	std::string& finishLoad,						// level to load when finish is reached
+	std::vector<Coin*>& coins,					// coins in world
+	std::string& finishLoad,					// level to load when finish is reached
 	std::vector<std::string>& otherLoads,		// levels to load when a load trigger is reached
 	PlayerBall& player,							// player object, so coins can be reset and player position changed
 	sf::RenderWindow& window,					// window object
-	Camera& camera								// camera object, so camera can be adjusted to fit world
+	Camera& camera,								// camera object, so camera can be adjusted to fit world
+	sf::Texture& coinTexture					// coin texture to be assigned to any coins created
 ) {
 	// open file and check for success
 	std::ifstream levelFile(levelName);
@@ -17,11 +18,20 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 		return;
 	}
 
-	// clear worldObjects
+	// clear world objects (Collidable*)
 	for (auto obj : worldObjects) {
 		delete obj;
 	}
 	worldObjects.clear();
+
+	// clear coins (Coin*)
+	for (auto coin : coins) {
+		delete coin;
+	}
+	coins.clear();
+
+	// clear otherLoads
+	otherLoads.clear();
 
 	// flag: LEVEL reached
 	bool levelReached = false;
@@ -36,8 +46,6 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 		if (line.rfind("LEVEL", 0) == 0) levelReached = true;
 		
 		if (!levelReached) {
-			std::cout << "loaded level line: " << line << std::endl;
-
 			std::istringstream rowChars(line);
 			// go through the line's characters
 
@@ -57,7 +65,6 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 				switch (block) {
 					case '0': break;
 					case '1': {
-						std::cout << "placing platform at (" << cur_x << ", " << cur_y << ")" << std::endl;
 						Platform* newPlatform = new Platform(sf::Vector2f(cur_x, cur_y), SQ_SIZE, SQ_SIZE, sf::Color::Green);
 						worldObjects.push_back(newPlatform);
 						break;
@@ -65,6 +72,10 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 					case 'p': {
 						player.setPosition({ cur_x, cur_y });
 						break;
+					}
+					case 'c': {
+						Coin* newCoin = new Coin(coinTexture, { cur_x, cur_y });
+						coins.push_back(newCoin);
 					}
 				}
 
@@ -75,8 +86,6 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 			cur_y += SQ_SIZE;
 		}
 		else {
-			std::cout << "loaded load: " << line << std::endl;
-
 			// if finish load
 			if (line[0] == 'f') {
 				// Following code from ChatGPT to extract the filename inside the quotes
