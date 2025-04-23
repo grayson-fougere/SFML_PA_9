@@ -4,6 +4,8 @@
 #include <vector>
 #include <iostream>
 #include "Collidable.hpp"
+#include "Mathf.hpp"
+
 #include <SFML/Audio.hpp>
 class PlayerBall : public sf::CircleShape, public Collidable {
 
@@ -28,6 +30,7 @@ public:
 	void update(int32_t dt);
 	void collide(std::vector<sf::FloatRect> collisionsToCheck);
 	void collideObstacles(std::vector<sf::Shape*> obstacles);
+	void collidePlatorms(std::vector<sf::Shape*> platforms);
 	void collideTop(sf::RectangleShape floor);
 	void collideView(sf::Vector2u windowSize);
 

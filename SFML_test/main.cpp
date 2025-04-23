@@ -6,8 +6,11 @@
 #include <random>
 #include <sstream>
 #include "Camera.hpp"
+#include "Spike.hpp"
 #include "Obstacle.hpp"
 #include "WorldLoader.hpp"
+#include "Platform.hpp"
+
 #include <optional>
 #include <SFML/Audio.hpp>
 int main()
@@ -34,7 +37,7 @@ int main()
 
     Background WorldBackground;
     WorldBackground.resize(window.getSize());
-    PlayerBall player = PlayerBall(100, 0.25f, 5.f, 0.15f, {10.f, 10.f});
+    PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, {10.f, 10.f});
 
     sf::Music backgroundMusic;
 
@@ -113,13 +116,19 @@ int main()
     trianslkgb.setScale({ 5.f, 5.f });
     trianslkgb.setPosition({ 800, 700 });
 
+    Spike spike({ 1000, 1000 }, 10);
+    Platform plat1(sf::Vector2f(3000.f, 1000.f), 1000, 1000, sf::Color::Magenta);
     window.setFramerateLimit(60); // sets max frame rate to 60fps
 
     sf::Clock deltaTimeClock;
 
     std::vector<sf::Shape*> obstacles;
+    std::vector<sf::Shape*> platforms;
     obstacles.push_back(&trasnejdks);
     obstacles.push_back(&obs1);
+    obstacles.push_back(&spike);
+
+    platforms.push_back(&plat1);
 
     // other world stuff
     std::vector<Collidable> worldObjects;
@@ -178,7 +187,9 @@ int main()
 
         //obstacles.push_back(trianslkgb);
 
+        // These should prob be merged?
         player.collideObstacles(obstacles);
+        player.collidePlatorms(platforms);
 
         //player.collideTop(shape2);
         /*player.collideView(window.getSize());*/
@@ -203,7 +214,9 @@ int main()
             window.draw(coin.getSprite());
         }
         window.draw(coinCounterText);
+        window.draw(spike);
         window.draw(obs1);
+        window.draw(plat1);
         window.draw(coinIcon);
         //window.draw(colsqr);
         //window.draw(trianslkgb);

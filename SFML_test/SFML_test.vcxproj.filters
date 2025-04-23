@@ -32,6 +32,9 @@
     <ClCompile Include="WorldLoader.cpp">
       <Filter>Game Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>Base Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp">
@@ -57,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="WorldLoader.hpp">
       <Filter>Game Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Spike.hpp">
+      <Filter>Base Classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
