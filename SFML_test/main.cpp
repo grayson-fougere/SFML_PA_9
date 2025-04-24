@@ -13,7 +13,6 @@
 #include "TestCases.hpp"
 #include <optional>
 #include <SFML/Audio.hpp>
-#include "Flag.hpp"
 
 int main()
 {
@@ -107,7 +106,7 @@ int main()
     std::vector<std::string> otherLoads;
 
     /* ----- NEW WORLD LOADING ----- */
-    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
+    WorldLoader::loadLevel("Level1.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
 
     std::vector<sf::Shape*> platforms;
     for (auto obj : worldObjects) {
