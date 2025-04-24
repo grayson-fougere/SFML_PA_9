@@ -24,9 +24,11 @@ public:
 	void setNumCoins(int newNumCoins);
 	void incrementCoins();
 	void setJumpSound(const sf::SoundBuffer& buffer);
+	void setDeath(bool isDead);
 	// getters
 	sf::Vector2f getMomentum();
 	int getNumCoins();
+	bool getDeath();
 
 	// update and collisions
 	void update(int32_t dt);
@@ -45,6 +47,7 @@ private:
 	float _jump;
 	bool hasJumped;
 	int numCoins;
+	bool isDead;
 	sf::Vector2f _moveSpeedCap;
 	sf::Texture _ballTexture;
 	std::optional<sf::Sound> jumpSound;
