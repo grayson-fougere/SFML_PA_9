@@ -231,8 +231,9 @@ int main()
         }
 
         //if won
-        if (optionSelected == 2) {
+        if (optionSelected == 3) {
             
+            WorldBackground.clear();
             window.clear();
             window.draw(winScreen);
             window.draw(exitButton);
@@ -260,6 +261,25 @@ int main()
         {
             if (event->is<sf::Event::Closed>())
                 window.close();
+        }
+
+        if (player.getDeath()) {
+            optionSelected = 0;
+            player.setPosition({ 500.f, 0.f });
+            viewCam.update();
+            window.setView(viewCam);
+            WorldBackground.clear();
+            window.clear();
+            window.draw(deathTitle);
+            window.draw(exitButton);
+
+            if (exitButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
+                exitButton.setFillColor(sf::Color::Red);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    window.close();
+                }
+            }
+            else { exitButton.setFillColor(sf::Color::White); }
         }
 
 

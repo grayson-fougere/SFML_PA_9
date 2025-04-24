@@ -179,7 +179,7 @@ void PlayerBall::onCollide(Collidable* obj, std::vector<sf::Vector2f> points)
 	}
 	hasJumped = false;
 	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
-		kill();
+		isDead = true;
 	}
 }
 
