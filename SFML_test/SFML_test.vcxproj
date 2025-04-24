@@ -26,6 +26,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugCircle.hpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="TestCases.cpp" />
     <ClCompile Include="WorldLoader.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Spike.cpp" />
@@ -39,6 +40,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Obstacle.hpp" />
     <ClCompile Include="PlayerBall.cpp" />
+    <ClInclude Include="TestCases.hpp" />
     <ClInclude Include="WorldLoader.hpp" />
     <ClInclude Include="Mathf.hpp" />
     <ClInclude Include="Platform.hpp" />
