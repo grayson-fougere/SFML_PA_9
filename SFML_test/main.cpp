@@ -17,13 +17,15 @@ int main()
 {
     /* ----- Main Window ----- */
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);  // sf window to draw to
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
 
     /* ---- Fonts ----- */
     sf::Font font("Resources/freedom-font.ttf");
 
     /* ----- Background ----- */
     Background WorldBackground;
-    WorldBackground.resize(window.getSize());
+    //WorldBackground.resize(window.getSize());
 
     /* ----- Player ----- */
     PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, { 10.f, 10.f });
@@ -100,7 +102,7 @@ int main()
     std::vector<std::string> otherLoads;
 
     /* ----- NEW WORLD LOADING ----- */
-    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
+    WorldLoader::loadLevel("Level1.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
 
     std::vector<Platform*> platforms;
     for (auto obj : worldObjects) {
@@ -117,6 +119,8 @@ int main()
             spikes.push_back(spike_ptr);
         }
     }
+
+    
 
 
     /* ----- OLD WORLD STUFF ----- */
@@ -324,7 +328,7 @@ int main()
 
             /* ----- Window Re-drawing ----- */
             window.clear();
-            WorldBackground.draw(window);
+            WorldBackground.draw(window, viewCam);
             for (auto obj : worldObjects) {
                 sf::Drawable* d_obj = dynamic_cast<sf::Drawable*>(obj);
                 if (d_obj != nullptr) {
