@@ -11,4 +11,5 @@ Logan Meyers: Lab 2
 
 
 To move left/right is A/D and to move up is W or Space
+
 [Youtube video](https://youtu.be/rypC-zr-mPc)
