@@ -2,82 +2,38 @@
 #include <iostream>
 
 
-Background::Layer::Layer(sf::Texture& tex, float speed)
-    : texture(tex), sprite(tex), scrollSpeed(speed) {
-    
-}
-
 Background::Background() {
-    try {
-        // load textures
-        if (!farTex.loadFromFile("Textures/space_far.jpg")) {
-            std::cerr << "Failed to load far layer texture\n";
-        }
-        if (!midTex.loadFromFile("Textures/space_mid.jpg")) {
-            std::cerr << "Failed to load mid layer texture\n";
-        }
-        if (!nearTex.loadFromFile("Textures/space_near.jpg")) {
-            std::cerr << "Failed to load near layer texture\n";
-        }
+    // load image
+    bg_img.loadFromFile("Textures/space_mid.jpg");
 
-        // construct layers
-        layers.emplace_back(farTex, 0.2f);
-        layers.emplace_back(midTex, 0.5f);
-        layers.emplace_back(nearTex, 0.8f);
-    }
-    catch (const std::exception& e) {
-        std::cerr << "Background initialization error: " << e.what() << "\n";
+    // add textures to vector
+    for (float i = -10; i < 20; i++) {
+        sf::Sprite* newSprite = new sf::Sprite(bg_img);
+        newSprite->setPosition(sf::Vector2f(i * bg_img.getSize().x, 0.f));
+        std::cout << newSprite->getPosition().x << std::endl;
+        images.push_back(newSprite);
     }
 }
 
-void Background::draw(sf::RenderWindow& window) {
-    for (auto& layer : layers) {
-        sf::Vector2f position = layer.sprite.getPosition();
-        float layerWidth = layer.texture.getSize().x * layer.sprite.getScale().x;
-        float windowWidth = static_cast<float>(window.getSize().x);
-
-        // Draw enough repeated copies of the layer to fill the screen horizontally
-        for (float x = position.x; x < windowWidth; x += layerWidth) {
-            layer.sprite.setPosition(sf::Vector2f(static_cast<float>(x), 0.f));
-            window.draw(layer.sprite);
-        }
-
-        // Handle potential gap on the left side when scrolling left
-        if (position.x > 0) {
-            for (float x = position.x - layerWidth; x > -layerWidth; x -= layerWidth) {
-                layer.sprite.setPosition(sf::Vector2f(static_cast<float>(x), 0.f));
-                window.draw(layer.sprite);
-            }
-        }
+void Background::draw(sf::RenderWindow& window, Camera& viewCam) {
+    for (auto*& sprite : images) {
+        sprite->setPosition({ sprite->getPosition().x, viewCam.getTopY()});
+        window.draw(*sprite);
     }
 }
-
-
 void Background::resize(sf::Vector2u windowSize) {
-    for (auto& layer : layers) {
-        const auto texSize = layer.texture.getSize();
+    for (auto& layer : images) {
+        const auto texSize = layer->getTexture().getSize();
         if (texSize.x == 0 || texSize.y == 0) continue;
 
-        layer.sprite.setScale({
+        layer->setScale({
             static_cast<float>(windowSize.x) / texSize.x,
             static_cast<float>(windowSize.y) / texSize.y
             });
     }
 }
-
 void Background::scroll(float offset) {
-    for (auto& layer : layers) {
-        float layerOffset = offset * layer.scrollSpeed;
-        sf::Vector2f pos = layer.sprite.getPosition();
-        pos.x += layerOffset;
-
-        // Wrap horizontally
-        float textureWidth = layer.texture.getSize().x * layer.sprite.getScale().x;
-        if (pos.x <= -textureWidth)
-            pos.x += textureWidth;
-        else if (pos.x >= textureWidth)
-            pos.x -= textureWidth;
-
-        layer.sprite.setPosition(pos);
+    for (auto*& sprite : images) {
+        sprite->move({ offset, 0 });
     }
 }

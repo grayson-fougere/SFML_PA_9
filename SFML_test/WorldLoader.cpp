@@ -79,7 +79,7 @@ void WorldLoader::loadLevel(std::string levelName,	// what level to load. relati
 						break;
 					}
 					case 's': {
-						Spike* newSpike = new Spike({ cur_x, cur_y + (SQ_SIZE*2.f) }, SQ_SIZE / 10.f, sf::Color::Red);
+						Spike* newSpike = new Spike({ cur_x + (SQ_SIZE/2), cur_y + (SQ_SIZE * 1.f)}, SQ_SIZE / 10.f, sf::Color::Red);
 						worldObjects.push_back(newSpike);
 						break;
 					}
