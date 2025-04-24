@@ -34,6 +34,9 @@ void Camera::setCoinCounterOffset(sf::Vector2f newOffset) {
 sf::Vector2f Camera::getTargetPos() {
 	return sf::Vector2f(playerTarget->getPosition().x, yPos);
 }
+float Camera::getTopY() {
+	return getCenter().y - (getSize().y / 2);
+}
 sf::Vector2f Camera::getCoinSpritePos() {
 	return sf::Vector2f(
 		getCenter().x + (getSize().x / 2) - coinSpriteOffset.x,  // X: get center, move to right side, and subtract offset
@@ -44,6 +47,7 @@ sf::Vector2f Camera::getCoinCounterPos() {
 		getCenter().x + (getSize().x / 2) - coinCounterOffset.x,   // X: get center, move to right side, and subtract offset
 		getCenter().y - (getSize().y / 2) + coinCounterOffset.y);  // Y: get center, move to top, and add offset
 }
+
 
 /* ----- MainLoop Functions ----- */
 
