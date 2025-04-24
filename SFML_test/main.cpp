@@ -28,7 +28,7 @@ int main()
 
     /* ----- Background ----- */
     Background WorldBackground;
-    //WorldBackground.resize(window.getSize());
+    WorldBackground.resize(window.getSize());
 
     /* ----- Player ----- */
     PlayerBall player = PlayerBall(100, 0.125f, 5.f, 0.15f, { 10.f, 10.f });
@@ -300,6 +300,7 @@ int main()
                 }
             }
 
+
             if (coins.size() <= 0) {
                 optionSelected = 3;
             }
@@ -343,6 +344,8 @@ int main()
             //window.draw(plat1);
             window.draw(coinIcon);
             //window.draw(trasnejdks);
+
+            //flag.draw(window);
         }
 
 
