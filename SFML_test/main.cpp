@@ -166,11 +166,11 @@ int main()
     magraCredits.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f });
     backButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 150});
     howToPlay.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 200 });
-    winScreen.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 150 });
+    winScreen.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 150 });
     nextLevelButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 200 });
 
 
-    
+    winScreen.setFillColor(sf::Color::Green);
     howToPlay.setFillColor(sf::Color::Red);
 
     /* ----- Main Loop ----- */
@@ -178,7 +178,7 @@ int main()
     {
         
         //when main menu is open
-        if (mainMenuOpen == true) {
+        if (mainMenuOpen == true && optionSelected == 0) {
             window.clear();
             window.draw(gameTitle);
             window.draw(playButton);
@@ -228,6 +228,24 @@ int main()
                 }
             }
             else { backButton.setFillColor(sf::Color::White); }
+        }
+
+        //if won
+        if (optionSelected == 2) {
+            
+            window.clear();
+            window.draw(winScreen);
+            window.draw(exitButton);
+            
+
+
+            if (exitButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
+                exitButton.setFillColor(sf::Color::Red);
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    window.close();
+                }
+            }
+            else { exitButton.setFillColor(sf::Color::White); }
         }
 
 
@@ -281,6 +299,11 @@ int main()
                     break; // Exit after collecting one coin per frame
                 }
             }
+
+            if (coins.size() <= 0) {
+                optionSelected = 3;
+            }
+
 
             /* ----- Handle Collisions ----- */
             std::vector<sf::FloatRect> collisionBoxes;
