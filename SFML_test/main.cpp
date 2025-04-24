@@ -17,6 +17,7 @@ int main()
 {
     /* ----- Main Window ----- */
     sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);  // sf window to draw to
+    window.setFramerateLimit(60);
 
     /* ---- Fonts ----- */
     sf::Font font("Resources/freedom-font.ttf");
@@ -103,7 +104,7 @@ int main()
     /* ----- NEW WORLD LOADING ----- */
     WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
 
-    std::vector<Platform*> platforms;
+    std::vector<sf::Shape*> platforms;
     for (auto obj : worldObjects) {
         Platform* platform_ptr = dynamic_cast<Platform*>(obj);
         if (platform_ptr != nullptr) {
@@ -111,7 +112,7 @@ int main()
         }
     }
 
-    std::vector <Spike*> spikes;
+    std::vector <sf::Shape*> spikes;
     for (auto obj : worldObjects) {
         Spike* spike_ptr = dynamic_cast<Spike*>(obj);
         if (spike_ptr != nullptr) {
@@ -225,9 +226,9 @@ int main()
         player.collide(collisionBoxes);
 
         // These should prob be merged?
-        player.collideObjects(collisionStuffs); // Shift to the use of this!
-        player.collideObstacles(spikes);
-        player.collidePlatorms(platforms);
+        //player.collideObjects(collisionStuffs); // Shift to the use of this!
+        //player.collideObjects(spikes);
+        player.collideObjects(platforms);
 
         /* ----- Update Camera, Coin Icon, & Coin Text ----- */
         viewCam.update();

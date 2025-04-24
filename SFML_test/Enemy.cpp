@@ -8,7 +8,7 @@ Enemy::Enemy(const sf::Vector2f& newStartPos, const sf::Vector2f& newEndPos, con
 	moveSpeed = newSpeed;
 }
 
-void Enemy::onCollide(Collidable* obj)
+void Enemy::onCollide(Collidable* obj, std::vector<sf::Vector2f> points)
 {
 
 }

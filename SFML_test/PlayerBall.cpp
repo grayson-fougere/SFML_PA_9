@@ -170,8 +170,8 @@ void PlayerBall::onCollide(Collidable* obj, std::vector<sf::Vector2f> points)
 	//_momentum*=0.f;
 	if (obj->getTag() == "Floor") {
 		sf::Vector2f force = applyCollisionForces(points, this, dynamic_cast<sf::Shape*>(obj) );
-		_momentum = _momentum.projectedOnto(force.perpendicular().normalized());
-
+		if (force != sf::Vector2f()) _momentum = _momentum.projectedOnto(force.perpendicular());
+		else _momentum *= 0.0f;
 	}
 	hasJumped = false;
 	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
