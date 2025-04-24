@@ -11,11 +11,12 @@ float Collidable::distanceBetween(const sf::Vector2f& a, const sf::Vector2f& b)
 }
 
 bool Collidable::isInRange(const float& n, const float& bound1, const float& bound2) {
+    float margin = 1;
     if (bound2 >= bound1) {
-        return n >= bound1 && n <= bound2;
+        return n >= bound1 - margin && n <= bound2 + margin;
     }
     else {
-        return n <= bound1 && n >= bound2;
+        return n <= bound1 + margin && n >= bound2 - margin;
     }
 }
 
@@ -59,28 +60,38 @@ std::vector<sf::Vector2f> Collidable::findAllIntersections(sf::Shape& a, sf::Sha
     Collidable* b_col = dynamic_cast<Collidable*>(&b);
     //std::cout << (b_col == nullptr) << std::endl;
     if (intersects.size() > 0 && b_col) {
-        onCollide(b_col);
+        onCollide(b_col, intersects);
     }
     return intersects;
 }
 
 
 
-sf::Vector2f Collidable::applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape)
+sf::Vector2f Collidable::applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape, sf::Shape* collidingShape)
 {
+    sf::Vector2f netForce;
     if (intersections.size() >= 2) {
-        const sf::Vector2f& p1 = intersections[0], & p2 = intersections[1], diff = p2 - p1, mid = p1 + (diff * 0.5f), norm = diff.perpendicular(),
-            shapeCenter = moveShape->getTransform().transformPoint(moveShape->getGeometricCenter());
-        //float moveSize = (mid - moveShape->getTransform().transformPoint(moveShape->getGeometricCenter())).length();
-        //float moveMagnitude = 15;
-        float moveMagnitude = distanceBetween(p1, shapeCenter) - distanceBetween(mid, shapeCenter);
-        if (distanceBetween(mid + norm.normalized() * moveMagnitude, shapeCenter) > 
-            distanceBetween(mid + norm.normalized() * -moveMagnitude, shapeCenter)) {
-            moveMagnitude *= -1;
+        for (int i = 0; i < intersections.size(); i+=2) {
+            if (i + 1 == intersections.size()) { continue; }
+            const sf::Vector2f& p1 = intersections[i], & p2 = intersections[i+1], diff = p2 - p1, mid = p1 + (diff * 0.5f), norm = diff.perpendicular(),
+            shapeCenter = moveShape->getTransform().transformPoint(moveShape->getGeometricCenter()), colShapeCenter = collidingShape->getTransform().transformPoint(collidingShape->getGeometricCenter());
+            //float moveSize = (mid - moveShape->getTransform().transformPoint(moveShape->getGeometricCenter())).length();
+            //float moveMagnitude = 15;
+            float moveMagnitude = distanceBetween(p1, shapeCenter) - distanceBetween(mid, shapeCenter);
+            if (distanceBetween(mid, colShapeCenter) > distanceBetween(shapeCenter, colShapeCenter)) {
+                moveMagnitude += distanceBetween(p1, shapeCenter);
+            }
+
+            if (distanceBetween(mid + norm.normalized() * moveMagnitude, shapeCenter) >
+                distanceBetween(mid + norm.normalized() * -moveMagnitude, shapeCenter)) {
+                moveMagnitude *= -1;
+            }
+            //moveShape->move(norm.normalized() * moveMagnitude);
+            netForce += (norm.normalized() * moveMagnitude);
         }
-        moveShape->move(norm.normalized()*moveMagnitude);
-        return norm.normalized() * moveMagnitude;
     }
+    moveShape->move(netForce);
+    return netForce;
 }
 
 std::string Collidable::getTag()

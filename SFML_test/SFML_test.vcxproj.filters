@@ -36,6 +36,9 @@
       <Filter>Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="TestCases.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp">
@@ -49,9 +52,6 @@
     </ClInclude>
     <ClInclude Include="Collidable.hpp">
       <Filter>Base Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.hpp">
-      <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="PlayerBall.hpp">
       <Filter>Entities</Filter>
@@ -67,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="Mathf.hpp" />
     <ClInclude Include="Platform.hpp" />
+    <ClInclude Include="TestCases.hpp">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">

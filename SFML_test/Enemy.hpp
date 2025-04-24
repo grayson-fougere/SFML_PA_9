@@ -5,7 +5,7 @@
 class Enemy : public sf::RectangleShape, public Collidable {
 public:
 	Enemy(const sf::Vector2f& newStartPos = { 0,0 }, const sf::Vector2f& newEndPos = {0,1}, const float& newSpeed=0.1);
-	void onCollide(Collidable* obj) override;
+	void onCollide(Collidable* obj, std::vector<sf::Vector2f> points) override;
 
 	sf::Vector2f getStartPos();
 	sf::Vector2f getEndPos();
