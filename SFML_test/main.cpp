@@ -7,12 +7,19 @@
 #include <sstream>
 #include "Camera.hpp"
 #include "Obstacle.hpp"
+#include "WorldLoader.hpp"
+#include "Platform.hpp"
+#include "TestCases.hpp"
 #include <optional>
 #include <SFML/Audio.hpp>
 int main()
 {
-    //sf::Window App
-    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);
+    // Test cases
+    TestCases::runAll();
+    /* ----- Main Window ----- */
+    sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!", sf::State::Fullscreen);  // sf window to draw to
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
 
     // opens a font
     sf::Font font("Resources/freedom-font.ttf");
