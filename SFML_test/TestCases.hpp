@@ -9,7 +9,7 @@ public:
 	static void TestIncrementCoins();
 	static void TestPlatformCreation();
 	static void TestBackgroundScroll();
-	static void TestBackgroundBasic();
+	static void TestBackground();
 	static void runAll();
 private:
 };

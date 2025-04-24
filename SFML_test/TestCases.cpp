@@ -69,8 +69,8 @@ void TestCases::TestBackgroundScroll() {
     std::cout << "PASS: Scroll executed aka no crash)\n";
 }
 
-void TestCases::TestBackgroundBasic() {
-    std::cout << "Background Basic Test\n";
+void TestCases::TestBackground() {
+    std::cout << "Background Test\n";
     Background bg; // Just test constructor
     std::cout << "PASS: Background initialized ala no crash\n";
 }
@@ -79,4 +79,6 @@ void TestCases::runAll() {
     TestSetNumCoinsplayer();
     TestIncrementCoins();
     TestPlatformCreation();
+    TestBackgroundScroll();
+    TestBackground();
 }
