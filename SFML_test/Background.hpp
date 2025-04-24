@@ -10,6 +10,7 @@ public:
     void draw(sf::RenderWindow& window, Camera& viewCam);
     void resize(sf::Vector2u windowSize);
     void scroll(float offset);
+    void clear();
 
     sf::Texture bg_img;
 

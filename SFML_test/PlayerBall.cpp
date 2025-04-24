@@ -23,8 +23,12 @@ void PlayerBall::setJumpSound(const sf::SoundBuffer& buffer) {
 	jumpSound.emplace(buffer);
 	jumpSound->setVolume(20.f);  
 }
+void PlayerBall::setDeath(bool isDead) {
+	this->isDead = isDead;
+}
 sf::Vector2f PlayerBall::getMomentum() { return _momentum; }
 int PlayerBall::getNumCoins() { return numCoins; }
+bool PlayerBall::getDeath() { return isDead; }
 
 void PlayerBall::update(int32_t dt) {
 	// update momentum - step 0 [input]

@@ -37,3 +37,9 @@ void Background::scroll(float offset) {
         sprite->move({ offset, 0 });
     }
 }
+void Background::clear() {
+    for (auto*& sprite : images) {
+        delete sprite;
+    }
+    images.clear();
+}
