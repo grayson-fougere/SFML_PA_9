@@ -45,7 +45,6 @@
     <ClInclude Include="Spike.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.hpp" />
     <ClInclude Include="PlayerBall.hpp" />
   </ItemGroup>
   <ItemGroup>

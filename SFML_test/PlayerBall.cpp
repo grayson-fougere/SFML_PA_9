@@ -102,9 +102,9 @@ void PlayerBall::collide(std::vector<sf::FloatRect> collisionsToCheck) {
 	}
 }
 
-void PlayerBall::collideObstacles(std::vector<Spike*> obstacles) {
-	for (int i = 0; i < obstacles.size(); i++) {
-		sf::Shape* obst = dynamic_cast<sf::Shape*>(obstacles[i]);
+void PlayerBall::collideObjects(std::vector<sf::Shape*> objects) {
+	for (int i = 0; i < objects.size(); i++) {
+		sf::Shape* &obst = objects[i]; 
 		std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
 		if (intersectingPoints.size() > 0) {
 			//setScale({ 0.75f, 0.75f });
@@ -118,19 +118,6 @@ void PlayerBall::collideObstacles(std::vector<Spike*> obstacles) {
 	}
 }
 
-void PlayerBall::collidePlatorms(std::vector<Platform*> platforms) {
-	for (int i = 0; i < platforms.size(); i++) {
-		sf::Shape* obst = dynamic_cast<sf::Shape*>(platforms[i]);
-		if (obst != nullptr) {
-			std::vector<sf::Vector2f> intersectingPoints = findAllIntersections(*this, *obst);
-			if (intersectingPoints.size() > 0) {
-				// This should be moved to onCollide?
-				sf::Vector2f force = applyCollisionForces(intersectingPoints, this);
-				_momentum = _momentum.projectedOnto(force.perpendicular());
-			}
-		}
-	}
-}
 
 void PlayerBall::collideTop(sf::RectangleShape floor) {
 	if (getGlobalBounds().findIntersection(floor.getGlobalBounds())) {
@@ -177,10 +164,15 @@ void PlayerBall::collideView(sf::Vector2u windowSize) {
 	_momentum = { newXMom, newYMom };
 }
 
-void PlayerBall::onCollide(Collidable* obj)
+void PlayerBall::onCollide(Collidable* obj, std::vector<sf::Vector2f> points)
 {
 	std::cout << obj->getTag() << std::endl;
 	//_momentum*=0.f;
+	if (obj->getTag() == "Floor") {
+		sf::Vector2f force = applyCollisionForces(points, this, dynamic_cast<sf::Shape*>(obj) );
+		if (force != sf::Vector2f()) _momentum = _momentum.projectedOnto(force.perpendicular());
+		else _momentum *= 0.0f;
+	}
 	hasJumped = false;
 	if (obj->getTag() == "Enemy" || obj->getTag() == "Obstacle") {
 		kill();

@@ -94,6 +94,7 @@ int main()
 
     /* ----- DeltaTime Clock ----- */
     sf::Clock deltaTimeClock;
+    std::vector<sf::Shape*> collisionStuffs;
 
     /* ----- World Objects ----- */
     std::vector<Coin*> coins;
@@ -104,7 +105,7 @@ int main()
     /* ----- NEW WORLD LOADING ----- */
     WorldLoader::loadLevel("Level1.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
 
-    std::vector<Platform*> platforms;
+    std::vector<sf::Shape*> platforms;
     for (auto obj : worldObjects) {
         Platform* platform_ptr = dynamic_cast<Platform*>(obj);
         if (platform_ptr != nullptr) {
@@ -112,7 +113,7 @@ int main()
         }
     }
 
-    std::vector <Spike*> spikes;
+    std::vector <sf::Shape*> spikes;
     for (auto obj : worldObjects) {
         Spike* spike_ptr = dynamic_cast<Spike*>(obj);
         if (spike_ptr != nullptr) {
@@ -315,9 +316,10 @@ int main()
 
             player.collide(collisionBoxes);
 
-            // These should prob be merged?
-            player.collideObstacles(spikes);
-            player.collidePlatorms(platforms);
+        // These should prob be merged?
+        //player.collideObjects(collisionStuffs); // Shift to the use of this!
+        player.collideObjects(spikes);
+        player.collideObjects(platforms);
 
             /* ----- Update Camera, Coin Icon, & Coin Text ----- */
             viewCam.update();
