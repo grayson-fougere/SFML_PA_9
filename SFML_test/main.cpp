@@ -120,56 +120,7 @@ int main()
         }
     }
 
-    
-
-
-    /* ----- OLD WORLD STUFF ----- */
-
-    //bool coinActive = true;
-
-    //// Initialize coins
-    //coins.emplace_back(coinTexture, sf::Vector2f(window.getSize().x - 2100.f, window.getSize().y - 1500.f));
-    //coins.emplace_back(coinTexture, sf::Vector2f(800.f, 600.f));
-    //coins.emplace_back(coinTexture, sf::Vector2f(1200.f, 400.f));
-    //
-    //sf::RectangleShape shape2({ 1600.f, 100.f });
-    //sf::RectangleShape colsqr({ 0.f, 0.f });
-
-    //Obstacle obs1({100, 100}, {300, 1000});
-    ////sf::RectangleShape colsqr({ 100.f, 100.f });
-    //sf::ConvexShape trasnejdks(3);
-    //trasnejdks.setPoint(0, { 0.f, 0.f });
-    //trasnejdks.setPoint(1, { 100.f, 0.f });
-    //trasnejdks.setPoint(2, { 0.f, -100.f });
-    //trasnejdks.setFillColor(sf::Color::Red);
-    //trasnejdks.setScale({ 2.5f, 2.5f });
-    //trasnejdks.setPosition({ 0, 1800 });
-
-    //shape2.setFillColor(sf::Color::Blue);
-    //shape2.setPosition({ 0.f, 800.f });
-    //sf::RectangleShape shape3({ 50.f, 500.f });
-    //shape3.setFillColor(sf::Color::Green);
-    //shape3.setPosition({ 1200.f, 0.f });
-
-    //sf::ConvexShape trianslkgb(3);
-    //trianslkgb.setPoint(0, { 0, 50 });
-    //trianslkgb.setPoint(1, { 50, 50 });
-    //trianslkgb.setPoint(2, { 25, 0 });
-    //trianslkgb.setFillColor(sf::Color::Green);
-    //trianslkgb.setScale({ 5.f, 5.f });
-    //trianslkgb.setPosition({ 800, 700 });
-
-    //Spike spike({ 1000, 1000 }, 10);
-    //Platform plat1(sf::Vector2f(3000.f, 1000.f), 1000, 1000, sf::Color::Magenta);
-    //window.setFramerateLimit(60); // sets max frame rate to 60fps
-
-    //std::vector<sf::Shape*> obstacles;
-    //std::vector<sf::Shape*> platforms;
-    //obstacles.push_back(&trasnejdks);
-    //obstacles.push_back(&obs1);
-    //obstacles.push_back(&spike);
-
-    //platforms.push_back(&plat1);
+  
 
     
     bool mainMenuOpen = true;
@@ -182,6 +133,10 @@ int main()
     sf::Text logkenCredits(font, "Logan Meyers,   Kenny Hussey", 70);
     sf::Text magraCredits(font, "Mason Nagel,     Grayson Fougere", 70);
     sf::Text backButton(font, "Back", 48);
+    sf::Text howToPlay(font, "To move sideways A/D | To move up W/Space", 30);
+    sf::Text deathTitle(font, "Death comes for us all", 60);
+    sf::Text winScreen(font, "Congrats", 200);
+    sf::Text nextLevelButton(font, "Next Level", 75);
 
     //changes origin of text boxes to center so when changing position it is in the center of the screen
     gameTitle.setOrigin({ gameTitle.getGlobalBounds().getCenter().x, gameTitle.getGlobalBounds().getCenter().y });
@@ -192,6 +147,10 @@ int main()
     logkenCredits.setOrigin({ logkenCredits.getGlobalBounds().getCenter().x, logkenCredits.getGlobalBounds().getCenter().y });
     magraCredits.setOrigin({ magraCredits.getGlobalBounds().getCenter().x, magraCredits.getGlobalBounds().getCenter().y });
     backButton.setOrigin({ backButton.getGlobalBounds().getCenter().x, backButton.getGlobalBounds().getCenter().y });
+    howToPlay.setOrigin({ howToPlay.getGlobalBounds().getCenter().x, howToPlay.getGlobalBounds().getCenter().y });
+    winScreen.setOrigin({ winScreen.getGlobalBounds().getCenter().x, winScreen.getGlobalBounds().getCenter().y });
+    nextLevelButton.setOrigin({ nextLevelButton.getGlobalBounds().getCenter().x, nextLevelButton.getGlobalBounds().getCenter().y });
+
 
     //sets position of the text boxes
     gameTitle.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 200});
@@ -202,6 +161,13 @@ int main()
     logkenCredits.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f - 75 });
     magraCredits.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f });
     backButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 150});
+    howToPlay.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 200 });
+    winScreen.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 150 });
+    nextLevelButton.setPosition({ static_cast<float>(window.getSize().x) / 2.f, static_cast<float>(window.getSize().y) / 2.f + 200 });
+
+
+    
+    howToPlay.setFillColor(sf::Color::Red);
 
     /* ----- Main Loop ----- */
     while (window.isOpen())
@@ -214,6 +180,7 @@ int main()
             window.draw(playButton);
             window.draw(creditsButton);
             window.draw(exitButton);
+            window.draw(howToPlay);
 
             if (playButton.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition()))) {
                 playButton.setFillColor(sf::Color::Red);
@@ -313,8 +280,6 @@ int main()
 
             /* ----- Handle Collisions ----- */
             std::vector<sf::FloatRect> collisionBoxes;
-            //collisionBoxes.push_back(shape2.getGlobalBounds());
-            //collisionBoxes.push_back(shape3.getGlobalBounds());
 
             player.collide(collisionBoxes);
 
