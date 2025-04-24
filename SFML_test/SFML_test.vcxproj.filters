@@ -29,6 +29,12 @@
     <ClCompile Include="coin.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="WorldLoader.cpp">
+      <Filter>Game Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Spike.cpp">
+      <Filter>Base Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Background.hpp">
@@ -52,6 +58,12 @@
     <ClInclude Include="coin.hpp">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="WorldLoader.hpp">
+      <Filter>Game Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Spike.hpp">
+      <Filter>Base Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utils">
@@ -66,5 +78,16 @@
     <Filter Include="Base Classes">
       <UniqueIdentifier>{c5019821-2cc1-4efa-aae1-df2417d310aa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Levels">
+      <UniqueIdentifier>{ae8cf39d-19d8-4f3d-adac-464b3d5491b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Level1.txt">
+      <Filter>Levels</Filter>
+    </Text>
+    <Text Include="LevelSelect.txt">
+      <Filter>Levels</Filter>
+    </Text>
   </ItemGroup>
 </Project>

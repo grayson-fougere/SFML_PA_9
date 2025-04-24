@@ -17,12 +17,12 @@ class Collidable {
 public:
     Collidable(std::string newTag);
     virtual ~Collidable()=default;
-    virtual void onCollide(Collidable* obj) {};
-    virtual void onCollide(sf::Shape& obj) {};
+    virtual void onCollide(Collidable* obj, std::vector<sf::Vector2f> points) {};
+    float distanceBetween(const sf::Vector2f& a, const sf::Vector2f& b);
     bool isInRange(const float& n, const float& bound1, const float& bound2);
     std::optional<sf::Vector2f> findIntersection(const float& x1, const float& y1, const float& x2, const float& y2, const float& x3, const float& y3, const float& x4, const float& y4);
     std::vector<sf::Vector2f> findAllIntersections(sf::Shape& a, sf::Shape& b);
-    virtual void applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape);
+    virtual sf::Vector2f applyCollisionForces(const std::vector<sf::Vector2f>& intersections, sf::Shape* moveShape, sf::Shape* collidingShape);
 
     std::string getTag();
     void setTag(std::string newTag);

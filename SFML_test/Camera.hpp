@@ -1,3 +1,5 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 #include "PlayerBall.hpp"
 
@@ -11,8 +13,10 @@ public:
 	Camera();
 	// Camera constructor given window. Sets view of window size and top left pos of {0.f, 0.f}
 	Camera(sf::RenderWindow& window);
-	// Camera constructor given window and player to follow. Sets view of window size and dynamically follow player
+	// Camera constructor given window and player to follow. Centers vertically on player's y pos
 	Camera(sf::RenderWindow& window, PlayerBall& playerToFollow);
+	// Camera constructer given window, player to follow, and manual vertical center
+	Camera(sf::RenderWindow& window, PlayerBall& playerToFollow, float y_pos);
 
 	/* ----- Setters ----- */
 
@@ -20,10 +24,8 @@ public:
 	void updateWindow(sf::RenderWindow& window);
 	// Update which player object to follow. Does NOT change to dynamic following.
 	void updatePlayer(PlayerBall& newPlayerToFollow);
-	// Update which center position to follow. Does NOT change to static following.
-	void updateStaticCenter(sf::Vector2f newPos);
-	// Update which center position to follow, given top-left pos. Does NOT change to static following.
-	void updateStaticPos(sf::Vector2f newPos);
+	// Update the y pos to stick to
+	void updateYPos(float newYPos);
 	// Set offset from view (top right) to place coin sprite {right of screen - X, top of screen + Y}
 	void setCoinSpriteOffset(sf::Vector2f newOffset);
 	// Set offset from view (top right) to place coin counter {right of screen - X, top of screen + Y}
@@ -32,16 +34,12 @@ public:
 	/* ----- Getters ----- */
 	// Get the center pos to follow. Based on static vector or player's current pos
 	sf::Vector2f getTargetPos();
+	// Get the top height of the camera view
+	float getTopY();
 	// Get global position to draw coin sprite
 	sf::Vector2f getCoinSpritePos();
 	// Get global position to draw coin counter
 	sf::Vector2f getCoinCounterPos();
-
-	/* ----- Toggles ----- */
-	// Changes following to dynamic (player)
-	void followPlayer();
-	// Changes following to static (vector)
-	void followStatic();
 
 	/* ----- MainLoop Functions ----- */
 	void update();
@@ -51,16 +49,8 @@ private:
  	sf::Vector2f coinSpriteOffset;
 	// Offset for coin counter text on screen
 	sf::Vector2f coinCounterOffset;
-
 	
-	// targets
-	sf::Vector2f staticTarget;
+	// target player and y pos
 	PlayerBall *playerTarget;
-
-	enum TargetType {
-		STATIC,
-		PLAYER
-	};
-
-	TargetType targetType;
+	float yPos;
 };
