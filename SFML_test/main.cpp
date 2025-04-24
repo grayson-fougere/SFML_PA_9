@@ -269,6 +269,9 @@ int main()
                 window.close();
         }
 
+
+
+        //when play is selected and first level
         if (optionSelected == 1) {
             /* ----- Get DeltaTime -----*/
             sf::Time dtClockRestart = deltaTimeClock.restart();
