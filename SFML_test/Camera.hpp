@@ -34,6 +34,8 @@ public:
 	/* ----- Getters ----- */
 	// Get the center pos to follow. Based on static vector or player's current pos
 	sf::Vector2f getTargetPos();
+	// Get the top height of the camera view
+	float getTopY();
 	// Get global position to draw coin sprite
 	sf::Vector2f getCoinSpritePos();
 	// Get global position to draw coin counter
