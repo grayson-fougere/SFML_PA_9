@@ -13,6 +13,7 @@
 #include "TestCases.hpp"
 #include <optional>
 #include <SFML/Audio.hpp>
+#include "Flag.hpp"
 
 int main()
 {
@@ -106,7 +107,7 @@ int main()
     std::vector<std::string> otherLoads;
 
     /* ----- NEW WORLD LOADING ----- */
-    WorldLoader::loadLevel("Level1.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
+    WorldLoader::loadLevel("LevelSelect.txt", worldObjects, coins, finishLoad, otherLoads, player, window, viewCam, coinTexture);
 
     std::vector<sf::Shape*> platforms;
     for (auto obj : worldObjects) {
@@ -312,6 +313,11 @@ int main()
                 }
             }
 
+            /* ----- Look for no more coins & win condition ----- */
+            if (coins.size() <= 0) {
+                // win
+            }
+
             /* ----- Handle Collisions ----- */
             std::vector<sf::FloatRect> collisionBoxes;
             //collisionBoxes.push_back(shape2.getGlobalBounds());
@@ -352,6 +358,8 @@ int main()
             //window.draw(plat1);
             window.draw(coinIcon);
             //window.draw(trasnejdks);
+
+            //flag.draw(window);
         }
 
 
