@@ -4,7 +4,7 @@
 
 Background::Background() {
     // load image
-    bg_img.loadFromFile("Textures/space_mid.jpg");
+    bg_img.loadFromFile("Textures/background.png");
 
     // add textures to vector
     for (float i = -10; i < 20; i++) {

@@ -7,7 +7,7 @@ PlayerBall::PlayerBall(float radius) : PlayerBall(radius, 0, 0, 0, {0, 0}) {}
 PlayerBall::PlayerBall(float radius, float accel, float jump, float gravity, sf::Vector2f moveSpeedCap)
 		: _accel(accel), _jump(jump), _gravity(gravity), _moveSpeedCap(moveSpeedCap), hasJumped(false), numCoins(0), sf::CircleShape(radius), Collidable("Player") {
 
-	_ballTexture = sf::Texture(sf::Image("Textures/Ball100.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
+	_ballTexture = sf::Texture(sf::Image("Textures/our_ball.png"), true), sf::IntRect({ 0, 0 }, { 100, 100 });
 
 	setTexture(&_ballTexture);
 }
